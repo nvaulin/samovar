@@ -1,6 +1,5 @@
-# SAMOVAR: <a href=""><img src="img/Logo_SAMOVAR_pprpl.png" align="right" height="100" ></a>
-#### Simulator of Artificial Metanomes: Organisms and Viruses from Abundances to Reads
-___
+# SAMOVAR: <a href=""><img src="img/Logo_SAMOVAR_pprpl.png" align="right" height="100" ></a>  <h3> Simulator of Artificial Metanomes: Organisms and Viruses from Abundances to Reads </h3> 
+
 *Metagenomics* – key approach for biological community analysis. Many new tools appear regularly and their validation becomes the crucial challenge. 
 
 
@@ -11,7 +10,11 @@ This  pipeline takes the input phenotype or environment as a community property 
 - Prediction of the relative abundance for a selected set of bacteria;
 - Illumina reads generation. 
 
-![img.png](img/pipeline.png)
+
+<div style='justify-content: center'>
+<img src="img/pipeline.png" align='center', width="80%">
+</div>
+
 ### Installation
 
 To get the tool clone the git repository:
