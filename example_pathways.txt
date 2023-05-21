@@ -1,0 +1,6 @@
+galactitol degradation
+mevalonate pathway III (Thermoplasma)
+methylphosphonate degradation I
+NADH to dimethyl sulfoxide electron transfer
+NADH to fumarate electron transfer
+NADH to hydrogen peroxide electron transfer
