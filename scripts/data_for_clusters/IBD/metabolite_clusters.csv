@@ -1,0 +1,166 @@
+,metab_name,cluster
+0,4-hydroxystyrene,0
+1,p-hydroxyphenylacetate,1
+2,phenyllactate,0
+3,azelate,2
+4,sebacate,2
+5,myristic acid,3
+6,dodecanedioic acid,2
+7,palmitic acid,3
+8,tetradecanedioate,4
+9,stearic acid,3
+10,hexadecanedioic acid,4
+11,eicosapentaenoic acid,5
+12,arachidonic acid,5
+13,eicosatrienoic acid,1
+14,eicosenoate,3
+15,12.13-diHOME,1
+16,docosahexaenoic acid,5
+17,carnosol,2
+18,docosapentaenoic acid,1
+19,adrenic acid,1
+20,palmitoylethanolamide,1
+21,nervonic acid,3
+22,docosapentaenoic acid ,1
+23,lithocholic acid,0
+24,chenodeoxycholate,5
+25,deoxycholic acid,0
+26,7-ketodeoxycholate,2
+27,alpha-muricholate,1
+28,cholate,5
+29,glycolithocholic acid,0
+30,glycodeoxycholic acid,0
+31,oleanolic acid,2
+32,maslinic acid,2
+33,taurolithocholic acid,6
+34,taurochenodesoxycholic acid,5
+35,taurodeoxycholic acid,0
+36,urobilin,2
+37,sphingosine,1
+38,cholesterol,1
+39,cholestenone,2
+40,beta-sitosterol,6
+41,propionate,0
+42,alanine,1
+43,oxalate,1
+44,lactate,5
+45,2-aminobutyric acid,1
+46,malonate,1
+47,alpha-hydroxybutyrate,5
+48,serine,1
+49,uracil,7
+50,proline,1
+51,alpha-ketoisovalerate,7
+52,caproic acid,2
+53,valine,1
+54,succite,5
+55,threonine,1
+56,4-hydroxybenzaldehyde,7
+57,nicotinate,0
+58,4-methylcatechol,2
+59,taurine,1
+60,thymine,7
+61,acetylalanine,1
+62,leucine,1
+64,aspartate,1
+65,malate,1
+66,adenine,3
+67,hypoxanthine,7
+68,phenylacetate,0
+69,salicylate,1
+70,4-nitrophenol,1
+71,caprylic acid,2
+72,alpha-ketoglutarate,1
+75,2-hydroxyglutarate,4
+76,methionine,7
+77,tartarate,5
+78,xylose,7
+79,hydrocinnamic acid,2
+80,guanine,2
+81,xanthine,7
+82,ribitol,4
+83,histidine,5
+84,orotate,7
+85,imidazolelactate,5
+86,fucose,5
+87,phenylalanine,1
+88,L-phenyllactic acid,1
+89,urate,4
+90,shikimate,4
+91,suberate,2
+92,arginine,5
+93,citrulline,7
+94,ascorbate,0
+95,tyrosine,1
+96,homovanillate,1
+97,sorbitol,5
+98,4-pyridoxate,7
+99,azelaic acid,2
+100,N-acetylglutamate,2
+101,citrate,3
+102,glucurote,0
+103,tryptophan,1
+104,1-3-7-trimethylurate,2
+105,pantothete,4
+106,cystine,5
+107,pentadecanoate,2
+108,pseudouridine,7
+109,deoxyinosine,7
+110,inosine,6
+111,lactose,1
+112,lithocholate,0
+113,glycocholate,5
+114,putrescine,1
+115,beta-alanine,1
+116,choline,5
+117,cytosine,5
+118,histamine,1
+119,creatinine,5
+120,N-acetylputrescine,1
+121,betaine,5
+122,nicotinic acid,0
+123,pyroglutamic acid,5
+124,pipecolic acid,0
+125,hydroxyproline,5
+126,creatine,5
+127,isoleucine,1
+128,asparagine,5
+129,ornithine,4
+130,1-methylnicotinamide,5
+131,trigonelline,1
+132,2-hydroxyphenethylamine,5
+133,urocanic acid,7
+134,imidazole propionate,1
+135,4-guanidinobutanoic acid,1
+136,butyrobetaine,1
+137,acetylcholine,0
+138,glutamine,5
+139,lysine,1
+140,glutamate,4
+141,triethanolamine,3
+142,pyridoxamine,0
+143,carnitine,5
+144,methionine sulfoxide,4
+145,1-methylguanine,4
+146,7-methylguanine,1
+147,3-methylxanthine,1
+148,3-methylhistidine,5
+150,dimethyllysine,1
+151,N-acetylspermidine,1
+152,trimethyllysine,5
+153,kynurenic acid,5
+154,N-acetylglutamic acid,2
+155,N-acetylhistidine,1
+156,5-acetylamino-6-amino-3-methyluracil,2
+157,ADMA,5
+158,pantothenate,0
+159,carnosine,3
+160,anserine,5
+161,2-deoxyadenosine,7
+162,thiamine,0
+163,atenolol,1
+164,diacetylspermine,1
+165,sphinganine,0
+166,phytosphingosine,1
+167,bilirubin,5
+168,urobilin*,2

@@ -26,7 +26,7 @@ def parse_args():
     parser.add_argument('--pathways', default=None, nargs='?',
                         help='read matebolic pathways to account from the file (each pathway on the new line')
     parser.add_argument('--metabolites', default=None, nargs='?',
-                        help='read metabolites pathways to account for')
+                        help='read metabolites, format: KEGG Compound ID (e.g. C07274)')
     parser.add_argument('-c', '--n_core', default=None, nargs='?',
                         help='number of core species to leave in metagenome')
     parser.add_argument('-t', '--threads', default=1, help='number of threads (cores)')

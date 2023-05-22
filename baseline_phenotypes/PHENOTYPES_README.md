@@ -13,4 +13,6 @@ This baseline phenotypes were taken from the gmRepo database (https://gmrepo.hum
 | D015179 	  | ColorectalNeoplasm      	 |
 | D015518 	  | Rett_Syndrome           	 |
 | D050197 	  | Atherosclerosis         	 |
-| D015212    | IDB                       |
+| D015212    | IBD                       |
+| D000067877 | Autism Spectrum Disorder   |
+| D013274 | Gastric Cancer |
