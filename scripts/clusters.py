@@ -101,7 +101,7 @@ def dataprep(bact_cluster_path, metab_cluster_path, interact_matrix_path):
 
 def main(metabolite_arg, phenotype): 
     try:
-        kegg = pd.read_csv(f'./data/{phenotype}/kegg_{phenotype}.tsv', sep='\t')
+        kegg = pd.read_csv(f'./data_for_clusters/{phenotype}/kegg_{phenotype}.tsv', sep='\t')
     except FileNotFoundError:
         print(f'Check, that you have a file kegg_{phenotype} with KEGG metadata for metabolites!')
         return
@@ -113,9 +113,9 @@ def main(metabolite_arg, phenotype):
         return
     print(f'Searching for {metabolite}..')
     
-    dataframes = dataprep(f'./data/{phenotype}/microbe_clusters.csv',
-                          f'./data/{phenotype}/metabolite_clusters.csv',
-                          f'./data/{phenotype}/interaction_score_matrix.csv')
+    dataframes = dataprep(f'./data_for_clusters/{phenotype}/microbe_clusters.csv',
+                          f'./data_for_clusters/{phenotype}/metabolite_clusters.csv',
+                          f'./data_for_clusters/{phenotype}/interaction_score_matrix.csv')
     if not dataframes:
         print('Something went wrong, check your datasets!')
         return
