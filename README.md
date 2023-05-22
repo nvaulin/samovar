@@ -51,7 +51,7 @@ options:
   --pathways [PATHWAYS]
                         read matebolic pathways to account from the file (each pathway on the new line
   --metabolites [METABOLITES]
-                        read metabolites pathways to account for
+                        read metabolites, format: KAGGLE Compound ID (consult readme for avaliable options)
   -c [N_CORE], --n_core [N_CORE]
                         number of core species to leave in metagenome
   -t THREADS, --threads THREADS
