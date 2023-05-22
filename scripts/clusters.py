@@ -1,6 +1,6 @@
 """
 Usage:
-python clusters.py -M C00183 -P autism
+python clusters.py -M my_metabolite -P soil
 """
 
 import argparse
@@ -105,7 +105,12 @@ def main(metabolite_arg, phenotype):
     except FileNotFoundError:
         print(f'Check, that you have a file kegg_{phenotype} with KEGG metadata for metabolites!')
         return
-    metabolite = list(kegg[kegg['KEGG'] == metabolite_arg]['Compound'])[0]
+    
+    try:
+        metabolite = list(kegg[kegg['KEGG'] == metabolite_arg]['Compound'])[0]
+    except IndexError:
+        print('This compoud was not significantly correlated or not explored. Please, consult list of avaliable metabolites or use pathways!')
+        return
     print(f'Searching for {metabolite}..')
     
     dataframes = dataprep(f'./data/{phenotype}/microbe_clusters.csv',
@@ -126,7 +131,7 @@ if __name__ == "__main__":
         description='This script allows to select bacterial species that correlate with the given metabolite'
     )
 
-    parser.add_argument('-M', '--metabolite', type=str, help='Metabolite argument, KEGG compound ID')
+    parser.add_argument('-M', '--metabolite', type=str, help='Metabolite argument')
     parser.add_argument('-P', '--phenotype', type=str,
                         help='Phenotype, folder with precomputed data. Options fo far: cystic_fibrosis, soil, IBD')
 
