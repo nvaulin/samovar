@@ -20,15 +20,15 @@ This  pipeline takes the input phenotype or environment as a community property 
 To get the tool clone the git repository:
 
 ```bash
-https://github.com/nvaulin/Metagenomes_Generations_Tool.git
-cd Metagenomes_Generations_Tool
+https://github.com/nvaulin/samovar.git
+cd samovar
 ```
 
 Create a `conda/mamba` environment with necessary packages and activate it:
 
 ```bash
 conda env create -f environment.yml
-conda activate metageneration
+conda activate samovar
 ```
 
 ### Usage
@@ -60,8 +60,8 @@ python Metagenome_generagtion.py  --help
 
 To uninstall the tool remove the conda environment and delete the cloned folder:
 ```python
-conda remove --name metageneration --all
-rm -rf Metagenomes_Generations_Tool
+conda remove --name samovar --all
+rm -rf samovar
 ```
 
 ### Citation
