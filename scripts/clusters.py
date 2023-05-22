@@ -1,6 +1,6 @@
 """
 Usage:
-python clusters.py -M my_metabolite -P soil
+python clusters.py -M C00183 -P autism
 """
 
 import argparse
@@ -131,7 +131,7 @@ if __name__ == "__main__":
         description='This script allows to select bacterial species that correlate with the given metabolite'
     )
 
-    parser.add_argument('-M', '--metabolite', type=str, help='Metabolite argument')
+    parser.add_argument('-M', '--metabolite', type=str, help='Metabolite argument, KEGG Compound ID')
     parser.add_argument('-P', '--phenotype', type=str,
                         help='Phenotype, folder with precomputed data. Options fo far: cystic_fibrosis, soil, IBD')
 
