@@ -39,6 +39,29 @@ To run the script, just call it from the directory where the tools is located:
 python Metagenome_generation.py -p [PHENOTYPE] ...
 ```
 
+Usage options:
+
+```bash
+options:
+  -h, --help            show this help message and exit
+  -p [PHENOTYPE], --phenotype [PHENOTYPE]
+                        the base phenotype for metagenome construction ("Health", "HIV")
+  -m [METAGENOME_FILE], --metagenome_file [METAGENOME_FILE]
+                        read metagenome composition from the file (tsv with species and abundances)
+  --pathways [PATHWAYS]
+                        read matebolic pathways to account from the file (each pathway on the new line
+  --metabolites [METABOLITES]
+                        read metabolites pathways to account for
+  -c [N_CORE], --n_core [N_CORE]
+                        number of core species to leave in metagenome
+  -t THREADS, --threads THREADS
+                        number of threads (cores)
+  --email [EMAIL]       Email address for Entrez requests
+  --api_key [API_KEY]   NCBI API key for Entrez requests (if any)
+```
+
+### Examples
+
 To perform the test run use the `2_species` phenotype:
 ```bash
 python Metagenome_generation.py -p 2_species
