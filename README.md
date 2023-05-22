@@ -45,7 +45,7 @@ Usage options:
 options:
   -h, --help            show this help message and exit
   -p [PHENOTYPE], --phenotype [PHENOTYPE]
-                        the base phenotype for metagenome construction ("Health", "HIV")
+                        the base phenotype for metagenome construction ("Health", "HIV", ... )
   -m [METAGENOME_FILE], --metagenome_file [METAGENOME_FILE]
                         read metagenome composition from the file (tsv with species and abundances)
   --pathways [PATHWAYS]
