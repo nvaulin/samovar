@@ -90,4 +90,15 @@ rm -rf samovar
 ### Citation
 
 If you use these tool, please cite as:
-- Vaulin N., Chechenina A., Ivanov. A, Uliantsev V. Metagenomes metageneration metatool. Природа, 2023, 443, 27–28
+- Vaulin N., Chechenina A., Ivanov. A, Ulyantsev V. SAMOVAR: a pipeline for *in silico* generation of metagenomic communities with given properties. Природа, 2023, 443, 27–28
+
+```bibtex
+@article{samovar2023,
+  title={SAMOVAR: a pipeline for in silico generation of metagenomic communities with given properties},
+  author={Vaulin, N. and Chechenina, A. and Ivanov, A. and Ulyantsev, V.},
+  journal={Природа},
+  year={2023},
+  volume={443},
+  pages={27--28}
+}
+```
