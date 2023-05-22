@@ -1,4 +1,4 @@
-name: metageneration
+name: samovar
 channels:
   - conda-forge
   - bioconda
