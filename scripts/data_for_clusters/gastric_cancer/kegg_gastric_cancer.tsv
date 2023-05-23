@@ -1,525 +1,77 @@
 Compound	KEGG	HMDB	High.Confidence.Annotation
-(Methylthio)acetate	C03173	HMDB0035646	True
-1-Amino-1-cyclopentanecarboxylate	C03969	HMDB0062225	True
-1-Aminocyclopropane-1-carboxylate	C01234	HMDB0036458	True
-1-Aminoethylphosphonate	C03782		True
-1-Methyl-2-pyrrolidinone	C11118	HMDB0002039	True
-1-Methyladenosine	C02494	HMDB0003331	True
-1-Methylhistamine	C05127	HMDB0000898	True
-1-Methylnicotinamide	C02918	HMDB0000699	True
-1,3-Diaminopropane	C00986	HMDB0000002	True
-10-Hydroxydecanoate	C02774		True
-2'-Deoxycytidine	C00881	HMDB0000014	True
-2'-Deoxyguanosine	C00330	HMDB0000085	True
-2'-Deoxyinosine	C05512	HMDB0000071	True
-2',3'-cCMP	C02354	HMDB0011691	True
-2-Amino-3-phosphonopropionate	C05672	HMDB0000370	True
-2-Aminobenzimidazole	C10901		True
-2-Aminoethylphosphonate	C03557	HMDB0011747	True
-2-Aminophenol	C01987	METPA0236	True
-2-Deoxyglucose 6-phosphate	C06369		True
-2-Deoxyribose 1-phosphate	C00672	HMDB0001351	True
-2-Deoxystreptamine	C02627		True
-2-Furoate	C01546	HMDB0000617	True
-2-Guanidinobenzimidazole	C10898		True
 2-Hydroxy-4-methylpentanoate	C03264	HMDB0000665	True
-2-Hydroxybutyrate	C05984	HMDB0000008	True
-2-Hydroxyglutarate	C02630	HMDB0059655	True
-2-Hydroxyisobutyrate		HMDB0000729	True
-2-Hydroxyoctanoate		HMDB0000711	True
-2-Hydroxypentanoate		HMDB0001863	True
-2-Hydroxyphenylacetate	C05852	HMDB0000669	True
-2-Isopropylmalate	C02504	HMDB0000402	True
-2-Oxoadipate	C00322	HMDB0000225	True
-2-Oxobutyrate	C00109	HMDB0000005	True
-2-Oxoglutarate	C00026	HMDB0000208	True
-2-Oxoisopentanoate	C00141	HMDB0000019	True
-2-Oxooctanoate		HMDB0013211	True
-2-Quinolinecarboxylate	C06325	HMDB0000842	True
-2-Thiopheneacetate	C02595	HMDB0029718	True
-2,3-Diaminopropionate	C06393	HMDB0002006	False
-2,3-DPG	C01159	HMDB0001294	True
-2,3-Pyridinedicarboxylate	C03722	HMDB0000232	True
 2,4-Diaminobutyrate	C03283	HMDB0002362	True
-2,4-Dihydroxypyrimidine-5-carboxylate	C03030		True
-2,4-Dimethylaniline	C11003		True
-2,5-Dihydroxybenzoate	C00628	HMDB0000152	True
-2AB	C02356	HMDB0000452	True
-2PG	C00631	HMDB0003391	True
-3'-AMP	C01367	HMDB0003540	True
-3',5'-Cyclic dAMP	C00968		True
-3-(2-Hydroxyphenyl)propionate	C01198	HMDB0033752	True
-3-(4-Hydroxyphenyl)propionate	C01744	HMDB0002199	True
-3-Acetylacrylate	C07091	HMDB0060461	True
-3-Aminoisobutyrate	C05145	HMDB0003911	True
-3-Aminopropane-1,2-diol	C06057		True
-3-Aminopropionitrile	C05670	HMDB0004101	True
-3-Aminopyrrolidine			True
-3-Chloroalanine	C02635		True
-3-Hydroxy-3-methylglutarate	C03761	HMDB0000355	True
-3-Hydroxyanthranilate	C00632	HMDB0001476	True
 3-Hydroxybutyrate	C01089	HMDB0000357	True
-3-Hydroxykynurenine	C02794	HMDB0000732	True
-3-Hydroxypropionate	C01013	HMDB0000700	True
-3-Indolebutyrate	C11284	HMDB0002096	True
-3-Indoxyl sulfate		HMDB0000682	True
-3-Iodotyrosine	C02515	HMDB0000021	True
-3-Methoxytyramine	C05587	HMDB0000022	True
-3-Methyladenine	C00913	HMDB0011600	True
-3-Methylbutanoate	C08262	HMDB0000718	True
-3-Methylguanine	C02230	HMDB0001566	True
-3-Methylhistidine	C01152	HMDB0000479	True
-3-Phenyllactate	C05607	HMDB0000779	False
 3-Phenylpropionate	C05629	HMDB0000764	True
-3-Ureidopropionate	C02642	HMDB0000026	True
-3,3',5-Triiodothyronine	C02465	HMDB0000265	True
-3,5-Diiodo-tyrosine	C01060		True
-3PG	C00197	HMDB0000807	False
-4-(beta-Acetylaminoethyl)imidazole	C05135	HMDB0013253	True
-4-Acetylbutyrate	C02129	HMDB0061881	True
 4-Amino-3-hydroxybutyrate	C03678	HMDB0061877	True
-4-Aminosalicylate	C02518	HMDB0014378	True
-4-Hydroxy-3-methoxymandelate	C05584	HMDB0000291	True
-4-Hydroxymandelate	C11527	HMDB0000822	True
-4-Hydroxymethylimidazole	C05562		True
-4-Methyl-2-oxopentanoate	C00233	HMDB0000695	True
 4-Methyl-5-thiazoleethanol	C04294	HMDB0032985	True
-4-Methylthio-2-oxobutyrate	C01180	HMDB0001553	True
-4-Oxohexanoate			True
-4-Oxopentanoate		HMDB0000720	True
-4-Pyridoxate	C00847	HMDB0000017	True
 5'-Deoxyadenosine	C05198	HMDB0001983	True
 5-Aminolevulinate	C00430	HMDB0001149	True
 5-Aminovalerate	C00431	HMDB0003355	True
 5-Hydroxyindoleacetate	C05635	HMDB0000763	True
 5-Hydroxylysine	C16741	HMDB0000450	True
-5-Hydroxytryptophan	C00643	HMDB0000472	True
-5-Methoxy-N,N-dimethyltryptamine	C08309	HMDB0002004	True
-5-Methoxyindoleacetate	C05660	HMDB0004096	True
-5-Methoxytryptamine	C05659	HMDB0004095	True
-5-Methyl-2'-deoxycytidine	C03592	HMDB0002224	True
-5-Methylcytosine	C02376	HMDB0002894	True
-5-Methyltetrahydrofolate	C00440	HMDB0001396	True
-5-Methylthioadenosine	C00170	HMDB0001173	True
 5-Oxoproline	C01879	HMDB0000267	True
-5,6-Dimethylbenzimidazole	C03114	HMDB0003701	True
-6-Aminohexanoate	C02378	HMDB0001901	True
 6-Hydroxyhexanoate	C06103	HMDB0012843	True
-6-Hydroxynicotinate	C01020	HMDB0002658	True
-6-Methylaminopurine	C08434	HMDB0002099	True
-6-Phosphogluconate	C00345	HMDB0001316	True
-7-Methylguanine	C02242	HMDB0000897	True
-7,8-Dihydrobiopterin	C02953	HMDB0000038	True
-7,8-Dihydroneopterin	C04874	HMDB0002275	True
-Acetyl CoA	C00024	HMDB0001206	True
-Acetylcholine	C01996	HMDB0000895	True
-Adenine	C00147	HMDB0000034	True
-Adenosine	C00212	HMDB0000050	True
-Adenosine 3',5'-diphosphate	C00054	HMDB0000061	True
-Adenosine 5'-phosphosulfate	C00224	HMDB0001003	True
-Adenylosuccinate	C03794	HMDB0000536	True
 Adipate	C06104	HMDB0000448	True
 ADMA	C03626	HMDB0001539	True
-ADP	C00008	HMDB0001341	True
-ADP-glucose	C00498	HMDB0006557	True
-ADP-ribose	C00301	HMDB0001178	True
-Agmatine	C00179	HMDB0001432	True
-AICAR	C04677	HMDB0001517	True
-Ala	C00041	HMDB0000161	True
-Ala-Ala	C00993	HMDB0003459	True
-Allantoate	C00499	HMDB0001209	True
-Allantoin	C01551	HMDB0000462	True
-Alliin	C08265	HMDB0029441	False
 alpha-Aminoadipate	C00956	HMDB0000510	True
-alpha-Methylbenzylamine	C02455	HMDB0002017	True
-Alpha-Methylserine	C02115		True
-Amantadine	C06818	HMDB0015051	True
-AMP	C00020	HMDB0000045	True
-Aniline	C00292	HMDB0003012	True
-Anserine	C01262	HMDB0000194	True
-Anthranilate	C00108	HMDB0001123	True
-Arg	C00062	HMDB0000517	True
-Arginine ethyl ester	C01404		True
-Argininosuccinate	C03406	HMDB0000052	True
-Asn	C00152	HMDB0000168	True
-Asp	C00049	HMDB0000191	True
-ATP	C00002	HMDB0000538	True
 Azelate	C08261	HMDB0000784	True
-Barbiturate	C00813	HMDB0041833	True
-Benzamide	C09815	HMDB0004461	True
-Benzamidine	C01784		True
-Benzimidazole	C02009		True
-Benzoate	C00180	HMDB0013677	True
-Benzoylformate	C02137	HMDB0001587	True
-Benzylsuccinate	C09816	HMDB0142179	True
-beta-Ala	C00099	HMDB0000056	True
-beta-Ala-Lys	C05341	HMDB0060442	True
-beta-Cyanoalanine	C02512		True
-beta-Imidazolelactate	C05568		True
-beta-Leucine	C02486	HMDB0003640	True
 Betaine	C00719	HMDB0000043	True
 Betaine aldehyde	C00576	HMDB0001252	True
-Betonicine	C08269	HMDB0029412	True
 Biotin	C00120	HMDB0000030	True
-Bis(3-aminopropyl)amine	C03375	HMDB0011634	True
-Butyrate	C00246	HMDB0000039	True
-Cadaverine	C01672	HMDB0002322	True
-cAMP	C00575	HMDB0000058	True
-Canavanine	C00308	HMDB0002706	True
-Carbamoylaspartate	C00438	HMDB0000828	True
-Carbamoylphosphate	C00169	HMDB0001096	True
 Carnitine	C00318	HMDB0000062	True
-Carnosine	C00386	HMDB0000033	True
 Castanospermine	C02256		True
-CDP	C00112	HMDB0001546	True
-CDP-choline	C00307	HMDB0001413	True
-cGMP	C00942	HMDB0001314	True
 Cholate	C00695	HMDB0000619	True
-Choline	C00114	HMDB0000097	True
-cIMP	C00943		True
-cis-Aconitate	C00417	HMDB0000072	True
-Citraconate	C02226	HMDB0000634	True
-Citramalate	C02614	HMDB0000426	False
-Citrate	C00158	HMDB0000094	True
 Citrulline	C00327	HMDB0000904	True
-CMP	C00055	HMDB0000095	True
-CMP-N-acetylneuraminate	C00128	HMDB0001176	True
-CoA	C00010	HMDB0001423	True
 Creatine	C00300	HMDB0000064	True
 Creatinine	C00791	HMDB0000562	True
-Crotonate	C01771	HMDB0010720	True
-CTP	C00063	HMDB0000082	True
-Cyanocobalamin	C02823	HMDB0000607	True
-Cyclohexylamine	C00571	HMDB0031404	True
-Cys	C00097	HMDB0000574	True
-Cys-Gly	C01419	HMDB0000078	True
-Cystathionine	C02291	HMDB0000099	True
-Cysteamine	C01678	HMDB0002991	True
-Cysteate	C00506	HMDB0002757	True
-Cysteine-glutathione disulphide			True
-Cysteine-glutathione disulphide -Divalent			True
-Cysteine S-sulfate	C05824	HMDB0000731	True
-Cysteine sulfinate	C00606	HMDB0000996	True
 Cystine	C00491	HMDB0000192	True
-Cytidine	C00475	HMDB0000089	True
-Cytosine	C00380	HMDB0000630	True
-dADP	C00206	HMDB0001508	True
-dAMP	C00360	HMDB0000905	True
-dATP	C00131	HMDB0001532	True
 DCA	C04483	HMDB0000626	True
-dCDP	C00705	HMDB0001245	True
-dCMP	C00239	HMDB0001202	True
-dCTP	C00458	HMDB0000998	True
-Deamido-NAD+	C00857	HMDB0001179	True
 Decanoate	C01571	HMDB0000511	True
-Desthiobiotin	C01909	HMDB0003581	True
-dGTP	C00286	HMDB0001440	True
-DHAP	C00111	HMDB0001473	True
-Diazoxide	C06949	HMDB0015251	True
-Diethanolamine	C06772	HMDB0004437	True
-Diethyl-2-phenylacetamide			True
-Digalacturonate	C02273	HMDB0039721	True
-Dihydroorotate	C00337	HMDB0000528	True
 Dihydrouracil	C00429	HMDB0000076	True
-Diphenylamine	C11016	HMDB0032562	True
-dITP	C01345	HMDB0003537	True
 Dodecanedioate	C02678	HMDB0000623	True
-Dodecanoate	C02679	HMDB0000638	True
-DOPA	C00355	HMDB0000609	True
-Dopamine	C03758	HMDB0000073	True
-dTDP	C00363	HMDB0001274	True
-dTMP	C00364	HMDB0001227	True
-dTTP	C00459	HMDB0001342	True
-dUDP	C01346	HMDB0001000	True
-dUMP	C00365	HMDB0001409	True
-dUTP	C00460	HMDB0001191	True
-Ectoine	C06231	METPA0797	True
-Epinephrine	C00788	HMDB0000068	True
-Ethanolamine phosphate	C00346	HMDB0000224	True
-F1,6P	C00354	HMDB0001058	True
-F6P	C00085	HMDB0000124	True
-FAD	C00016	HMDB0001248	True
-Folate	C00504	HMDB0000121	True
-Fumarate	C00122	HMDB0000134	True
-G1P	C00103	HMDB0001586	True
-G3P	C00661	HMDB0000807	False
-G6P	C00092	HMDB0001401	True
-GABA	C00334	HMDB0000112	True
-Galacturonate 1-phosphate	C04037		True
-gamma-Butyrobetaine	C01181	HMDB0001161	True
-gamma-Glu-2AB			True
-gamma-Glu-cys	C00669	HMDB0001049	True
-gamma-Guanidinobutyrate	C01035	HMDB0003464	True
-GDP	C00035	HMDB0001201	True
-GDP-mannose	C00096	HMDB0062759	False
 Gln	C00064	HMDB0000641	True
 Glu	C00025	HMDB0000148	True
-Glu-Glu	C01425	HMDB0028818	True
-Gluconate	C00257	HMDB0000625	True
-Glucosaminate	C03752	METPA0433	True
-Glucosamine	C00329	HMDB0001514	True
-Glucosamine 6-phosphate	C00352	HMDB0001254	True
-Glucuronate	C00191	HMDB0000127	True
 Glutarate	C00489	HMDB0000661	True
-Glutathione(ox)	C00127	HMDB0003337	True
-Glutathione(red)	C00051	HMDB0000125	True
-Gly	C00037	HMDB0000123	True
-Gly-Gly	C02037	HMDB0011733	True
-Gly-Leu	C02155	HMDB0000759	True
-Glycerate	C00258	HMDB0000139	True
-Glycerol	C00116	HMDB0000131	True
-Glycerophosphate	C00093	HMDB0000126	True
-Glycerophosphorylcholine	C00670	HMDB0000086	True
-Glycocholate	C01921	HMDB0000138	True
-Glycolate	C00160		True
-Glyoxylate	C00048	HMDB0000119	True
-GMP	C00144	HMDB0001397	True
-Gramine	C08304	HMDB0035762	True
-GTP	C00044	HMDB0001273	True
 Guanidinoacetate	C00581	HMDB0000128	True
-Guanidinosuccinate	C03139	HMDB0003157	True
-Guanine	C00242	HMDB0000132	True
-Guanosine	C00387	HMDB0000133	True
-Harman	C09209	HMDB0035196	True
 Heptanoate	C17714	HMDB0000666	True
 Hexanoate	C01585	HMDB0000535	True
-Hexylamine	C08306	HMDB0032323	True
-Hippurate	C01586	HMDB0000714	True
 His	C00135	HMDB0000177	True
-Histamine	C00388	HMDB0000870	True
-Histidinol	C00860	HMDB0003431	True
-Homocarnosine	C00884	HMDB0000745	True
-Homocysteine	C00155		True
-Homocystine	C01817	HMDB0000575	True
-Homoserine	C00263	HMDB0000719	True
-Homovanillate	C05582	HMDB0000118	True
-Hydroxyproline	C01015	HMDB0240251	True
-Hydroxyurea	C07044	HMDB0015140	True
-Hypotaurine	C00519	HMDB0000965	True
 Hypoxanthine	C00262	HMDB0000157	True
-Ibotenate	C10600		True
-IDP	C00104	HMDB0003335	True
-Ile	C00407	HMDB0000172	True
-Imidazole-4-acetate	C02835	HMDB0002024	True
-IMP	C00130	HMDB0015536	False
-Indole-3-acetaldehyde	C00637	HMDB0001190	True
-Indole-3-acetamide	C02693	HMDB0029739	True
-Indole-3-acetate	C00954	HMDB0000197	True
-Indole-3-ethanol	C00955	HMDB0003447	True
-Indolelactate	C02043	HMDB0000671	True
-Inosine	C00294	HMDB0000195	True
-Isethionate	C05123	HMDB0003903	True
-Isoamylamine	C02640	HMDB0031659	True
-Isobutylamine	C02787	HMDB0034198	True
-Isobutyryl CoA	C00630	HMDB0001243	True
-Isocitrate	C00311	HMDB0000193	True
-Isonicotinamide	C02421		True
-Isopropanolamine	C05771	HMDB0012136	True
-Itaconate	C00490	HMDB0002092	True
-ITP	C00081	HMDB0000189	True
-Kynurenine	C00328	HMDB0000684	True
-Lactate	C00186	HMDB0000190	True
-Leu	C00123	HMDB0000687	True
-Leu-Leu-Tyr	C11331		True
-Lys	C00047	HMDB0000182	True
-Lysinamide	C01930		True
-m-Hydroxybenzoate	C00587	HMDB0002466	True
-Malate	C00711	HMDB0000156	False
-Malonate	C00383		True
-Malonyl CoA	C00083	HMDB0001175	False
-Mannosamine	C03570		True
-Melamine	C08737	HMDB0041922	True
-Melatonin	C01598	HMDB0001389	True
 Met	C00073	HMDB0000696	True
-Metformin	C07151	HMDB0001921	True
-Methanesulfonate	C11145	HMDB0240280	True
 Methionine sulfoxide	C02989	HMDB0002005	True
-Methionine sulfoximine	C03510	HMDB0029430	True
-Methyl sulfate	C02704		True
-Methylguanidine	C02294	HMDB0001522	True
-Mucate	C00879	HMDB0000639	True
-Muramate	C06470	HMDB0003254	True
-Muscimol	C08311		True
-N-Acetyl-beta-alanine	C01073	HMDB0061880	True
-N-Acetylaspartate	C01042	HMDB0000812	True
-N-Acetylglucosamine	C00140	HMDB0000215	True
-N-Acetylglucosamine 1-phosphate	C04501	HMDB0001367	False
-N-Acetylglucosamine 6-phosphate	C00357	HMDB0002817	True
-N-Acetylglucosylamine	C01239	HMDB0001104	True
 N-Acetylglutamate	C00624	HMDB0001138	True
-N-Acetylhistidine	C02997	HMDB0032055	True
-N-Acetylleucine	C02710	HMDB0011756	True
-N-Acetylmethionine	C02712	HMDB0011745	True
 N-Acetylmuramate	C02713	HMDB0060493	True
-N-Acetylneuraminate	C00270		True
-N-Acetylornithine	C00437	HMDB0003357	True
-N-Acetylphenylalanine	C03519	HMDB0000512	True
 N-Acetylputrescine	C02714	HMDB0002064	True
-N-Acetylvaline		HMDB0011757	True
-N-alpha-Benzenolarginine ethylester	C01670		True
-N-alpha,N-alpha-Dimethylhistidine	C04259		True
-n-Butyl a-Picolinate			True
-N-Carbamylglutamate	C05829	HMDB0015673	True
 N-epsilon-Acetyllysine	C02727	HMDB0000206	True
-N-Formylaspartate	C01044	HMDB0060495	True
-N-Formylmethionine	C03145	HMDB0001015	True
-N-gamma-Ethylglutamine	C01047	HMDB0034365	True
 N-Methylalanine	C02721	HMDB0094692	True
-N-Methylaniline	C02299		True
 N-Methylglutamate	C01046	HMDB0062660	True
-N-omega-Methyltryptamine	C06213	HMDB0004370	True
-N,N-Dimethylglycine	C01026	HMDB0000092	True
-N1-Acetylspermidine	C00612	HMDB0001276	True
-N1-Acetylspermine	C02567	HMDB0001186	False
-N1-Acetylspermine_div	C02567	HMDB0001186	False
 N1,N12-Diacetylspermine	C03413	HMDB0002172	True
-N1,N8-Diacetylspermidine		HMDB0041947	True
-N6-Methyl-2'-deoxyadenosine	C03795		True
 N6,N6,N6-Trimethyllysine	C03793	HMDB0001325	True
 N8-Acetylspermidine	C01029	HMDB0002189	True
-NAD+	C00003	HMDB0000902	False
-NADH	C00004	HMDB0000902	False
-NADP+	C00006	HMDB0000217	False
-NADPH	C00005	HMDB0000217	False
-Nicotinamide	C00153	HMDB0001406	True
-Nicotinate	C00253	HMDB0001488	True
-Nicotine	C00745	HMDB0001934	True
-NMN	C00455	HMDB0000229	True
-Noradrenaline	C00547	HMDB0000216	True
-Nornicotine	C06524	HMDB0001126	True
 o-Acetylcarnitine	C02571	HMDB0000201	True
-O-Acetylserine	C00979	HMDB0003011	True
-o-Coumarate	C01772	HMDB0002641	True
-o-Hydroxybenzoate	C00805	HMDB0001895	True
-o-Hydroxyhippurate	C07588	HMDB0000840	True
-O-Phosphoserine	C01005	HMDB0000272	True
-o-Succinylhomoserine	C01118		True
-Octanoate	C06423	HMDB0000482	True
-Octopine	C04137		True
-Octylamine	C01740		True
 Ophthalmate	C21016	HMDB0005765	True
 Ornithine	C00077	HMDB0000214	True
-Orotate	C00295	HMDB0000226	True
-Orotidine 5'-monophosphate	C01103	HMDB0000218	True
 p-Aminobenzoate	C00568	HMDB0001392	True
-p-Coumarate	C00811	HMDB0002035	True
-p-Hydroxybenzoate	C00156	HMDB0000500	True
-p-Hydroxyphenylacetate	C00642	HMDB0000020	True
-P1, P4-Di(adenosine-5') tetraphosphate	C01260		True
-Pantothenate	C00864	HMDB0000210	True
-Pelargonate	C01601	HMDB0000847	True
 Pentanoate	C00803	HMDB0000892	True
-PEP	C00074	HMDB0000263	True
 Phe	C00079	HMDB0000159	True
-Phe-Phe		HMDB0013302	True
-Phenaceturate	C05598	HMDB0000821	True
-Phenethylamine	C05332	HMDB0012275	True
-Phenyl phosphate	C02734		True
-Phenylethanolamine	C02735	HMDB0001065	True
-Phenylpyruvate	C00166	HMDB0000205	True
-Phosphonoacetate	C05682	HMDB0004110	True
-Phosphorylcholine	C00588	HMDB0001565	True
 Phthalate	C01606	HMDB0002107	True
-Phytate	C01204	HMDB0003502	True
-Picolinamide	C01950		True
 Pimelate	C02656	HMDB0000857	True
 Pipecolate	C00408	HMDB0000070	True
-Porphobilinogen	C00931	HMDB0000245	True
 Pro	C00148	HMDB0000162	True
-Proline betaine	C10172	HMDB0004827	True
-Propionate	C00163	HMDB0000237	True
-Prostaglandin E2	C00584	HMDB0001220	True
-Prostaglandin F2alpha	C00639	HMDB0001139	True
-PRPP	C00119	HMDB0000280	True
-Pseudopelletierine	C10865	HMDB0034580	True
-Pterin	C00715	HMDB0000802	True
-Purine	C15587	HMDB0001366	True
 Purine riboside	C01736	HMDB0029956	True
 Putrescine(1,4-Butanediamine)	C00134	HMDB0001414	False
-Pyrazole	C00481		True
 Pyridoxal	C00250	HMDB0001545	True
 Pyridoxamine	C00534	HMDB0001431	True
-Pyridoxamine 5'-phosphate	C00647	HMDB0001555	True
-Pyridoxine	C00314	HMDB0000239	True
-Pyrrole-2-carboxylate	C05942	HMDB0004230	True
-Pyruvate	C00022	HMDB0000243	True
-Quinate	C00296	HMDB0003072	True
-R5P	C00117	HMDB0001548	True
-Riboflavin	C00255	HMDB0000244	True
-Ribulose 1,5-diphosphate	C01182		True
-Ru5P	C00199	HMDB0000618	True
-S-Lactoylglutathione	C03451	HMDB0001066	True
-S-Methylmethionine	C03172	HMDB0038670	True
-S7P	C05382	HMDB0001068	True
-Saccharate	C00818	HMDB0000663	True
 Saccharopine	C00449	HMDB0000279	True
-SAH	C00021	HMDB0000939	True
-SAM+	C00019	HMDB0001185	True
-Sarcosine	C00213	HMDB0000271	True
-SDMA		HMDB0003334	True
 Sebacate	C08277	HMDB0000792	True
-Sepiapterin	C00835	HMDB0000238	True
-Ser	C00065	HMDB0000187	True
-Serine O-sulfate	C02703		True
 Serotonin	C00780	HMDB0000259	True
-Shikimate	C00493	HMDB0003070	True
-Sinapate	C00482	HMDB0032616	True
-Sorbitol 6-phosphate	C01096	HMDB0005831	False
-Spermidine	C00315	HMDB0001257	True
-Spermine	C00750	HMDB0001256	True
-Succinate	C00042	HMDB0000254	True
-Succinyl CoA	C00091	HMDB0001022	True
 Synephrine	C04548	HMDB0004826	True
-Syringate	C10833	HMDB0002085	True
-Tartrate	C00898	HMDB0000956	True
 Taurine	C00245	HMDB0000251	True
-Taurocholate	C05122	HMDB0000036	True
 Taurocyamine	C01959	HMDB0003584	True
-TDP-glucose	C00842	HMDB0001328	True
-Terephthalate	C06337	HMDB0061917	True
-Tetrahydropalmatine	C02890		True
-Thiamine	C00378	HMDB0000235	True
-Thiamine monophosphate	C01081	HMDB0002666	True
-Thr	C00188	HMDB0000167	True
-threo-beta-methylaspartate	C03618		True
-Threonate	C01620	HMDB0000943	True
 Thymidine	C00214	HMDB0000273	True
-Thymine	C00178	HMDB0000262	True
-Tiglate	C08279	HMDB0001470	True
-trans-4-Hydroxy-3-methoxycinnamate	C01494	HMDB0000954	True
-trans-Aconitate	C02341	HMDB0000958	True
-trans-Cinnamate	C00423		True
 trans-Zeatin	C00371	HMDB0012204	True
-Trehalose 6-phosphate	C00689	HMDB0001124	True
-TRH	C03958	HMDB0060080	True
-Trientine	C07166		True
-Trigonelline	C01004	HMDB0000875	True
-Trimethylamine	C00565	HMDB0000906	True
-Trimethylamine N-oxide	C01104	HMDB0000925	True
-Trimethylsulfonium	C01008	HMDB0012295	True
-Tropine	C00729	METPA0074	True
-Tropinone	C00783	METPA0078	True
-Trp	C00078	HMDB0000929	True
-Tryptamine	C00398	HMDB0000303	True
 Tyr	C00082	HMDB0000158	True
-Tyramine	C00483	HMDB0000306	True
-Tyrosine methyl ester	C03404	HMDB0029217	True
-UDP	C00015	HMDB0000295	True
-UDP-glucose	C00029	HMDB0000286	True
-UDP-glucuronate	C00167	HMDB0000935	True
 UDP-N-acetylglucosamine	C00043	HMDB0000290	True
-UMP	C00105	HMDB0000288	True
-Undecanoate	C17715	HMDB0000947	True
-Uracil	C00106	HMDB0000300	True
-Urate	C00366	HMDB0000289	True
-Urea	C00086	HMDB0000294	True
 Uridine	C00299	HMDB0000296	True
-Urocanate	C00785	HMDB0000301	True
-UTP	C00075	HMDB0000285	True
-Val	C00183	HMDB0000883	True
 Xanthine	C00385	HMDB0000292	True
-Xanthopterin			True
-Xanthosine	C01762	HMDB0000299	True
-Xanthurenate	C02470	HMDB0000881	True
-XMP	C00655	HMDB0001554	True
-XTP	C00700	HMDB0000293	True
