@@ -113,9 +113,9 @@ def main(metabolite_arg, phenotype):
         return
     print(f'Searching for {metabolite}..')
     
-    dataframes = dataprep(f'./data_for_clusters/{phenotype}/microbe_clusters.csv',
-                          f'./data_for_clusters/{phenotype}/metabolite_clusters.csv',
-                          f'./data_for_clusters/{phenotype}/interaction_score_matrix.csv')
+    dataframes = dataprep(f'../Databases/data_for_clusters/{phenotype}/microbe_clusters.csv',
+                          f'../Databases/data_for_clusters/{phenotype}/metabolite_clusters.csv',
+                          f'../Databases/data_for_clusters/{phenotype}/interaction_score_matrix.csv')
     if not dataframes:
         print('Something went wrong, check your datasets!')
         return
