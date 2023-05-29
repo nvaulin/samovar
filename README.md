@@ -33,7 +33,7 @@ conda activate samovar
 
 ### Usage
 
-To run the script, just call it from the directory where the tools is located:
+To run the script, just call it from the directory where the tool is located:
 
 ```bash
 python Metagenome_generation.py -p [PHENOTYPE] ...
