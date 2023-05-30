@@ -200,8 +200,8 @@ if __name__ == '__main__':
     iss_cmd = ['iss', 'generate'] + [str(item) for pair in iss_params.items() for item in pair]
     result = subprocess.run(iss_cmd)
 
-    if os.path.exists(os.path.join(genomes_dir, 'multifasta.fna')):
-        os.remove(os.path.join(genomes_dir, 'multifasta.fna'))
+    if os.path.exists(os.path.join(GENOMES_DIR, 'multifasta.fna')):
+        os.remove(os.path.join(GENOMES_DIR, 'multifasta.fna'))
     if result.returncode == 0:
         print('\nThe metagenome was successfully generated!')
     else:
