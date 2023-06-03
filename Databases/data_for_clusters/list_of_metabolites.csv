@@ -1,0 +1,299 @@
+Phenotype, Metabolite,KEGG
+autism,2-Aminobutyrate,C02356
+autism,3-Phenylpropionate,C05629
+autism,4-Aminobutyrate,C00334
+autism,Acetate,C00033
+autism,Alanine,C00041
+autism,Arginine,C00062
+autism,Asparagine,C00152
+autism,Aspartate,C00049
+autism,beta-Alanine,C00099
+autism,Butyrate,C00246
+autism,Caprate,C01571
+autism,Choline,C00114
+autism,Ethanol,C00469
+autism,Formate,C00058
+autism,Fumarate,C00122
+autism,Glucose,C00221
+autism,Glutamate,C00025
+autism,Glutamine,C00064
+autism,Glycerol,C00116
+autism,Glycine,C00037
+autism,Histidine,C00135
+autism,Homovanillate,C05582
+autism,Isobutyrate,C02632
+autism,Isoleucine,C00407
+autism,Isopropanol,C01845
+autism,Isovalerate,C08262
+autism,Lactate,C00186
+autism,Leucine,C00123
+autism,Lysine,C00047
+autism,Malonate,C00383
+autism,Methanol,C00132
+autism,Methionine,C00073
+autism,Methylamine,C00218
+autism,"N,N-Dimethylglycine",C01026
+autism,Nicotinate,C00253
+autism,o-Cresol,C01542
+autism,O-Phosphocholine,C00588
+autism,p-Cresol,C01468
+autism,Phenylacetate,C07086
+autism,Phenylalanine,C00079
+autism,Proline,C00148
+autism,Propionate,C00163
+autism,Pyruvate,C00022
+autism,Serine,C00716
+autism,Succinate,C00042
+autism,Taurine,C00245
+autism,Threonine,C00188
+autism,Thymine,C00178
+autism,Trimethylamine,C00565
+autism,Tryptophan,C00078
+autism,Tyramine,C00483
+autism,Tyrosine,C00082
+autism,Uracil,C00106
+autism,Urea,C00086
+autism,Valerate,C00803
+autism,Valine,C00183
+autism,Xanthine,C00385
+IBD,1-3-7-trimethylurate,C16361
+IBD,1-methylguanine,C04152
+IBD,1-methylnicotinamide,C02918
+IBD,12.13-diHOME,C14829
+IBD,2-aminobutyric acid,C02356
+IBD,2-deoxyadenosine,C00559
+IBD,2-hydroxyglutarate,C02630
+IBD,2-hydroxyphenethylamine,C02735
+IBD,3-methylhistidine,C01152
+IBD,3-methylxanthine,C16357
+IBD,4-guanidinobutanoic acid,C01035
+IBD,4-hydroxybenzaldehyde,C00633
+IBD,4-hydroxystyrene,C05627
+IBD,4-methylcatechol,C06730
+IBD,4-nitrophenol,C00870
+IBD,4-pyridoxate,C00847
+IBD,5-acetylamino-6-amino-3-methyluracil,C16366
+IBD,7-ketodeoxycholate,C04643
+IBD,7-methylguanine,C02242
+IBD,acetylalanine,C01073
+IBD,acetylcholine,C01996
+IBD,adenine,C00147
+IBD,ADMA,C03626
+IBD,adrenic acid,C16527
+IBD,alanine,C00041
+IBD,alpha-hydroxybutyrate,C05984
+IBD,alpha-ketoglutarate,C00026
+IBD,alpha-ketoisovalerate,C00141
+IBD,alpha-muricholate,C17647
+IBD,anserine,C01262
+IBD,arachidonic acid,C00219
+IBD,arginine,C00062
+IBD,ascorbate,C00072
+IBD,asparagine,C00152
+IBD,aspartate,C00049
+IBD,atenolol,C13235
+IBD,azelaic acid,C08261
+IBD,azelate,C08261
+IBD,beta-alanine,C00099
+IBD,beta-sitosterol,C01753
+IBD,betaine,C00719
+IBD,bilirubin,C00486
+IBD,butyrobetaine,C01181
+IBD,caproic acid,C01585
+IBD,caprylic acid,C06423
+IBD,carnitine,C00318
+IBD,carnosine,C00386
+IBD,carnosol,C09069
+IBD,chenodeoxycholate,C02528
+IBD,cholate,C00695
+IBD,cholestenone,C00599
+IBD,cholesterol,C00187
+IBD,choline,C00114
+IBD,citrate,C00158
+IBD,citrulline,C00327
+IBD,creatine,C00300
+IBD,creatinine,C00791
+IBD,cystine,C00491
+IBD,cytosine,C00380
+IBD,deoxycholic acid,C04483
+IBD,deoxyinosine,C05512
+IBD,diacetylspermine,C03413
+IBD,dimethyllysine,C05545
+IBD,docosahexaenoic acid,C06429
+IBD,docosapentaenoic acid,C16513
+IBD,docosapentaenoic acid ,C16513
+IBD,dodecanedioic acid,C02678
+IBD,eicosapentaenoic acid,C06428
+IBD,eicosatrienoic acid,C03242
+IBD,eicosenoate,C16526
+IBD,fucose,C02781
+IBD,glucurote,C00191
+IBD,glutamate,C00025
+IBD,glutamine,C00064
+IBD,glycocholate,C01921
+IBD,glycodeoxycholic acid,C05464
+IBD,glycolithocholic acid,C15557
+IBD,guanine,C00242
+IBD,hexadecanedioic acid,C19615
+IBD,histamine,C00388
+IBD,histidine,C00135
+IBD,homovanillate,C05582
+IBD,hydrocinnamic acid,C05629
+IBD,hydroxyproline,C01015
+IBD,hypoxanthine,C00262
+IBD,imidazole propionate,C20522
+IBD,imidazolelactate,C05132
+IBD,inosine,C00294
+IBD,isoleucine,C00407
+IBD,kynurenic acid,C01717
+IBD,L-phenyllactic acid,C05607
+IBD,lactate,C00186
+IBD,lactose,C01970
+IBD,leucine,C00123
+IBD,lithocholate,C17658
+IBD,lithocholic acid,C17658
+IBD,lysine,C00047
+IBD,malate,C00149
+IBD,malonate,C00383
+IBD,maslinic acid,C16939
+IBD,methionine,C00073
+IBD,methionine sulfoxide,C02989
+IBD,myristic acid,C06424
+IBD,N-acetylglutamate,C00624
+IBD,N-acetylglutamic acid,C00624
+IBD,N-acetylhistidine,C02997
+IBD,N-acetylputrescine,C02714
+IBD,N-acetylspermidine,C00612
+IBD,nervonic acid,C08323
+IBD,nicotinate,C00253
+IBD,nicotinic acid,C00253
+IBD,oleanolic acid,C17148
+IBD,ornithine,C00077
+IBD,orotate,C00295
+IBD,oxalate,C00209
+IBD,p-hydroxyphenylacetate,C00642
+IBD,palmitic acid,C00249
+IBD,palmitoylethanolamide,C16512
+IBD,pantothenate,C00864
+IBD,pantothete,C00864
+IBD,pentadecanoate,C16537
+IBD,phenylacetate,C07086
+IBD,phenylalanine,C00079
+IBD,phenyllactate,C01479
+IBD,phytosphingosine,C12144
+IBD,pipecolic acid,C00408
+IBD,proline,C00148
+IBD,propionate,C00163
+IBD,pseudouridine,C02067
+IBD,putrescine,C00134
+IBD,pyridoxamine,C00534
+IBD,pyroglutamic acid,C01879
+IBD,ribitol,C00474
+IBD,salicylate,C07588
+IBD,sebacate,C08277
+IBD,serine,C00716
+IBD,shikimate,C00493
+IBD,sorbitol,C00794
+IBD,sphinganine,C00836
+IBD,sphingosine,C00319
+IBD,stearic acid,C01530
+IBD,suberate,C08278
+IBD,succite,C00042
+IBD,tartarate,C00898
+IBD,taurine,C00245
+IBD,taurochenodesoxycholic acid,C05465
+IBD,taurodeoxycholic acid,C05463
+IBD,taurolithocholic acid,C02592
+IBD,tetradecanedioate,C11002
+IBD,thiamine,C00378
+IBD,threonine,C00188
+IBD,thymine,C00178
+IBD,triethanolamine,C06771
+IBD,trigonelline,C01004
+IBD,trimethyllysine,C03793
+IBD,tryptophan,C00078
+IBD,tyrosine,C00082
+IBD,uracil,C00106
+IBD,urate,C00366
+IBD,urobilin,C05794
+IBD,urobilin*,C05793
+IBD,urocanic acid,C00785
+IBD,valine,C00183
+IBD,xanthine,C00385
+IBD,xylose,C00181
+gastric cancer,2-Hydroxy-4-methylpentanoate,C03264
+gastric cancer,"2,4-Diaminobutyrate",C03283
+gastric cancer,3-Hydroxybutyrate,C01089
+gastric cancer,3-Phenylpropionate,C05629
+gastric cancer,4-Amino-3-hydroxybutyrate,C03678
+gastric cancer,4-Methyl-5-thiazoleethanol,C04294
+gastric cancer,5'-Deoxyadenosine,C05198
+gastric cancer,5-Aminolevulinate,C00430
+gastric cancer,5-Aminovalerate,C00431
+gastric cancer,5-Hydroxyindoleacetate,C05635
+gastric cancer,5-Hydroxylysine,C16741
+gastric cancer,5-Oxoproline,C01879
+gastric cancer,6-Hydroxyhexanoate,C06103
+gastric cancer,Adipate,C06104
+gastric cancer,ADMA,C03626
+gastric cancer,alpha-Aminoadipate,C00956
+gastric cancer,Azelate,C08261
+gastric cancer,Betaine,C00719
+gastric cancer,Betaine aldehyde,C00576
+gastric cancer,Biotin,C00120
+gastric cancer,Carnitine,C00318
+gastric cancer,Castanospermine,C02256
+gastric cancer,Cholate,C00695
+gastric cancer,Citrulline,C00327
+gastric cancer,Creatine,C00300
+gastric cancer,Creatinine,C00791
+gastric cancer,Cystine,C00491
+gastric cancer,DCA,C04483
+gastric cancer,Decanoate,C01571
+gastric cancer,Dihydrouracil,C00429
+gastric cancer,Dodecanedioate,C02678
+gastric cancer,Gln,C00064
+gastric cancer,Glu,C00025
+gastric cancer,Glutarate,C00489
+gastric cancer,Guanidinoacetate,C00581
+gastric cancer,Heptanoate,C17714
+gastric cancer,Hexanoate,C01585
+gastric cancer,His,C00135
+gastric cancer,Hypoxanthine,C00262
+gastric cancer,Met,C00073
+gastric cancer,Methionine sulfoxide,C02989
+gastric cancer,N-Acetylglutamate,C00624
+gastric cancer,N-Acetylmuramate,C02713
+gastric cancer,N-Acetylputrescine,C02714
+gastric cancer,N-epsilon-Acetyllysine,C02727
+gastric cancer,N-Methylalanine,C02721
+gastric cancer,N-Methylglutamate,C01046
+gastric cancer,"N1,N12-Diacetylspermine",C03413
+gastric cancer,"N6,N6,N6-Trimethyllysine",C03793
+gastric cancer,N8-Acetylspermidine,C01029
+gastric cancer,o-Acetylcarnitine,C02571
+gastric cancer,Ophthalmate,C21016
+gastric cancer,Ornithine,C00077
+gastric cancer,p-Aminobenzoate,C00568
+gastric cancer,Pentanoate,C00803
+gastric cancer,Phe,C00079
+gastric cancer,Phthalate,C01606
+gastric cancer,Pimelate,C02656
+gastric cancer,Pipecolate,C00408
+gastric cancer,Pro,C00148
+gastric cancer,Purine riboside,C01736
+gastric cancer,"Putrescine(1,4-Butanediamine)",C00134
+gastric cancer,Pyridoxal,C00250
+gastric cancer,Pyridoxamine,C00534
+gastric cancer,Saccharopine,C00449
+gastric cancer,Sebacate,C08277
+gastric cancer,Serotonin,C00780
+gastric cancer,Synephrine,C04548
+gastric cancer,Taurine,C00245
+gastric cancer,Taurocyamine,C01959
+gastric cancer,Thymidine,C00214
+gastric cancer,trans-Zeatin,C00371
+gastric cancer,Tyr,C00082
+gastric cancer,UDP-N-acetylglucosamine,C00043
+gastric cancer,Uridine,C00299
+gastric cancer,Xanthine,C00385
