@@ -60,7 +60,7 @@ options:
   --api_key [API_KEY]   NCBI API key for Entrez requests (if any)
 ```
 
-Additional *InSilicoSeq* reads generation parameters can be also specified in the `iss_params.yml` file (the full list of the *InSilicoSeq* parameters can be found in it's [documentation](https://insilicoseq.readthedocs.io/en/latest/)
+Additional *InSilicoSeq* reads generation parameters (such as number of reads, error model, etc) can be also specified in the `iss_params.yml` file (the full list of the *InSilicoSeq* parameters can be found in it's [documentation](https://insilicoseq.readthedocs.io/en/latest/)).
 
 ### Examples
 
