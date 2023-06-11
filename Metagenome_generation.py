@@ -97,14 +97,13 @@ def find_minimal_refill(metagenome: pd.DataFrame, metabolites_specified: List[st
     return do_hits(metagenome, metabolic_needs, total_metagenome)
 
 
-def append_species_refill(abudances: pd.DataFrame, species_to_refill: set) -> pd.DataFrame:
+def append_species_refill(abudances: pd.DataFrame, to_refill: set) -> pd.DataFrame:
     """
     Append species to an existing dataframe of abundances and adjust abundance levels to maintain normalization.
 
     Args:
-        abudances: A pandas DataFrame with two columns, the first containing species names and the second
-            containing abundance levels.
-        species_to_refill: A set of species names to add to the abundance dataframe.
+        abudances: A pandas DataFrame with three columns, the first containing taxid, second - species name and third containing abundance levels.
+        to_refill: A set of species ids and names to add to the abundance dataframe.
     Returns:
         A pandas DataFrame with the new species added and abundance levels adjusted to maintain normalization.
     Raises:
@@ -112,8 +111,8 @@ def append_species_refill(abudances: pd.DataFrame, species_to_refill: set) -> pd
             does not contain numeric data.
     """
     abundance_level = abudances.abundance.mean()
-    abundances_refill = pd.DataFrame([species_to_refill,
-                                      [abundance_level] * len(species_to_refill)]).transpose()
+    abundances_refill = pd.DataFrame(to_refill)
+    abundances_refill['abundance'] = [abundance_level] * len(to_refill)
     abundances_refill.columns = abundances.columns
     abudances_new = pd.concat([abudances, abundances_refill])
     abudances_new['abundance'] = abudances_new.abundance / abudances_new.abundance.sum()
@@ -157,14 +156,14 @@ if __name__ == '__main__':
     if api_key is not None:
         Entrez.api_key = api_key
 
-    if n_samples > 1:
-        for sample in range(n_samples):
-            path = os.path.join(RESULTS_DIR, f'sample_{sample}')
-            os.makedirs(path, exist_ok=True)
+    for sample in range(n_samples):
+        path = os.path.join(RESULTS_DIR, f'sample_{sample}')
+        os.makedirs(path, exist_ok=True)
 
-    abundances = pd.read_csv(os.path.join('baseline_phenotypes', pheno + '.tsv'), sep='\t', header=None)
-    abundances.rename({0: 'species', 1: 'abundance'}, axis=1, inplace=True)
+    abundances = pd.read_csv(os.path.join('baseline_phenotypes', pheno + '.tsv'), header=None, sep='\t')
+    abundances.columns = ['tax_id','species', 'abundance']
     total_metagenome = abundances.copy()
+    print(abundances)
     if n_core:
         n_core = min(int(n_core), len(abundances))
         abundances = abundances.sort_values(by='abundance', ascending=False).head(n_core)
@@ -172,7 +171,7 @@ if __name__ == '__main__':
                               index_col='Pathways')
 
     for sample in range(n_samples):
-        species_to_refill = []
+        to_refill = []
         dir = os.path.join(RESULTS_DIR, f'sample_{sample}')
 
         if metabolites is not None:
@@ -183,15 +182,16 @@ if __name__ == '__main__':
         if pathways is not None:
             print('Reading required pathways...')
             pathways_specified = read_pathways(pathways)
-            species_to_refill = find_minimal_refill(abundances, pathways_specified, pathways_db, total_metagenome)
+            to_refill = find_minimal_refill(abundances, pathways_specified, pathways_db, total_metagenome)
 
         if os.path.isfile('bacteria_metab.txt'):
             with open('bacteria_metab.txt', 'r') as file:
-                for bacteria in file:
-                    species_to_refill.append(bacteria)
-        if species_to_refill:
-            abundances = append_species_refill(abundances, set(species_to_refill))
+                for tx_sp in file:
+                    to_refill.append(tuple(tx_sp.split(",")))
+        if to_refill:
+            abundances = append_species_refill(abundances, to_refill)
 
+        print(abundances)
         prepared_abudances = update_genomes(GENOMES_DIR, abundances, os.path.join(RESULTS_DIR, f'sample_{sample}'), n_threads)
         wr_code = write_multifasta(prepared_abudances, GENOMES_DIR)
         print('\n')
