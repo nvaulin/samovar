@@ -32,7 +32,7 @@ def download_genome(url, fna_filename, genomes_dir):
     urllib.request.urlretrieve(url, os.path.join(genomes_dir, fna_filename))
 
 
-def update_genomes(genomes_dir, abundances, n_threads=1):
+def update_genomes(genomes_dir, abundances, results_dir, n_threads=1):
     if not os.path.isdir(genomes_dir):
         os.makedirs(genomes_dir)
     prepared_abundances = pd.DataFrame(columns=['specie', 'taxid', 'abundance'])
@@ -100,11 +100,11 @@ def update_genomes(genomes_dir, abundances, n_threads=1):
                        genomes_to_download]
             concurrent.futures.wait(futures)
 
-    print('Genomes prepared, writing results/metagenome_composition.txt file')
+    print(f'Genomes prepared, writing {results_dir}/metagenome_composition.txt file')
     prepared_abundances.abundance = prepared_abundances.abundance / prepared_abundances.abundance.sum()
-    prepared_abundances.to_csv(os.path.join('results', 'metagenome_composition.txt'), sep='\t', index=False,
+    prepared_abundances.to_csv(os.path.join(results_dir, 'metagenome_composition.txt'), sep='\t', index=False,
                                header=False)
-    prepared_abundances[['taxid', 'abundance']].to_csv(os.path.join('results', 'abundances_for_iss.txt'), sep='\t',
+    prepared_abundances[['taxid', 'abundance']].to_csv(os.path.join(results_dir, 'abundances_for_iss.txt'), sep='\t',
                                                        index=False, header=False)
     return prepared_abundances
 
