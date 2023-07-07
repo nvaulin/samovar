@@ -8,9 +8,9 @@ from Bio import Entrez, SeqIO, Seq
 from Bio.SeqRecord import SeqRecord
 
 
-def generate_ncbi_search_terms(specie):
+def generate_ncbi_search_terms(tax_id):
     terms_for_search = []
-    specie_for_search = f'"{specie}"' + '[Organism]'
+    specie_for_search = f'"txid{tax_id}"' + '[Organism]'
     filter_for_latest = ' AND latest[filter]'
     filter_for_refseq = '" AND latest refseq"[filter]'
     filter_for_genbank = '"AND latest genbank"[filter]'
@@ -25,14 +25,14 @@ def generate_ncbi_search_terms(specie):
                 for filter_for_db in filters_for_db:
                     terms_temp = [specie_for_search, filter_for_db, filter_for_relevant]
                     terms_for_search.append(''.join(terms_temp) + filter_for_taxonomy + filter_for_complete)
-    return specie_for_search, terms_for_search
+    return terms_for_search
 
 
 def download_genome(url, fna_filename, genomes_dir):
     urllib.request.urlretrieve(url, os.path.join(genomes_dir, fna_filename))
 
 
-def update_genomes(genomes_dir, abundances, n_threads=1):
+def update_genomes(genomes_dir, abundances, results_dir, n_threads=1):
     if not os.path.isdir(genomes_dir):
         os.makedirs(genomes_dir)
     prepared_abundances = pd.DataFrame(columns=['specie', 'taxid', 'abundance'])
@@ -57,13 +57,10 @@ def update_genomes(genomes_dir, abundances, n_threads=1):
     print(f'Checking {len(abundances)} genomes, it may take some time depending on your internet connection')
     genomes_to_download = []
     for entry in range(len(abundances)):
-        specie, abundance = abundances.iloc[entry]
+        # change according to the abundancies file 
+        tax_id, specie, abundance = abundances.iloc[entry]
         assemblies_summary = pd.DataFrame(columns=assembly_summary_cols)
-        specie_for_search, terms_for_search = generate_ncbi_search_terms(specie)
-        try:
-            tax_id = Entrez.read(Entrez.esearch(db="taxonomy", term=specie))['IdList'][0]
-        except IndexError:
-            raise ValueError(f'No taxid found for {specie}. Please, check its spelling in the file and try again.')
+        terms_for_search = generate_ncbi_search_terms(tax_id)
         prepared_abundances.loc[len(prepared_abundances)] = [specie, str(tax_id), abundance]
         fna_filename = str(tax_id) + '.fna.gz'
         if fna_filename not in os.listdir(genomes_dir):
@@ -100,11 +97,11 @@ def update_genomes(genomes_dir, abundances, n_threads=1):
                        genomes_to_download]
             concurrent.futures.wait(futures)
 
-    print('Genomes prepared, writing results/metagenome_composition.txt file')
+    print(f'Genomes prepared, writing {results_dir}/metagenome_composition.txt file')
     prepared_abundances.abundance = prepared_abundances.abundance / prepared_abundances.abundance.sum()
-    prepared_abundances.to_csv(os.path.join('results', 'metagenome_composition.txt'), sep='\t', index=False,
+    prepared_abundances.to_csv(os.path.join(results_dir, 'metagenome_composition.txt'), sep='\t', index=False,
                                header=False)
-    prepared_abundances[['taxid', 'abundance']].to_csv(os.path.join('results', 'abundances_for_iss.txt'), sep='\t',
+    prepared_abundances[['taxid', 'abundance']].to_csv(os.path.join(results_dir, 'abundances_for_iss.txt'), sep='\t',
                                                        index=False, header=False)
     return prepared_abundances
 
