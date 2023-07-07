@@ -31,7 +31,7 @@ def parse_args():
     parser.add_argument('-t', '--threads', default=1, help='number of threads (cores)')
     parser.add_argument('-n', '--n_samples', default=1, nargs='?',
                         help='number of generated metagenome samples')
-    parser.add_argument('-o', '--out_dir', default='results', nargs='?', 
+    parser.add_argument('-o', '--out_dir', default='results', nargs='?',
                         help='path to directory to save generated files')
     parser.add_argument('--email', default='example@email.com', nargs='?',
                         help='Email address for Entrez requests')
@@ -161,7 +161,7 @@ if __name__ == '__main__':
         os.makedirs(path, exist_ok=True)
 
     abundances = pd.read_csv(os.path.join('baseline_phenotypes', pheno + '.tsv'), header=None, sep='\t')
-    abundances.columns = ['tax_id','species', 'abundance']
+    abundances.columns = ['tax_id', 'species', 'abundance']
     total_metagenome = abundances.copy()
     print(abundances)
     if n_core:
@@ -192,7 +192,8 @@ if __name__ == '__main__':
             abundances = append_species_refill(abundances, to_refill)
 
         print(abundances)
-        prepared_abudances = update_genomes(GENOMES_DIR, abundances, os.path.join(RESULTS_DIR, f'sample_{sample}'), n_threads)
+        prepared_abudances = update_genomes(GENOMES_DIR, abundances, os.path.join(RESULTS_DIR, f'sample_{sample}'),
+                                            n_threads)
         wr_code = write_multifasta(prepared_abudances, GENOMES_DIR)
         print('\n')
 
