@@ -219,6 +219,8 @@ if __name__ == '__main__':
     baseline_abundances.columns = ['tax_id', 'species', 'mean_abundance', 'sd_abundance']
     baseline_abundances['mean_abundance'] = baseline_abundances['mean_abundance'] / baseline_abundances[
         'mean_abundance'].sum()
+    baseline_abundances['mean_abundance'].fillna(baseline_abundances['mean_abundance'].mean(), inplace=True)
+    baseline_abundances['sd_abundance'].fillna(baseline_abundances['sd_abundance'].mean(), inplace=True)
 
     pathways_db = pd.read_csv(os.path.join('Databases', 'MetaCyc_pathways_by_species.csv'), sep=';',
                               index_col='Pathways')
