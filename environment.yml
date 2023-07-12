@@ -2,7 +2,7 @@ name: samovar
 channels:
   - conda-forge
   - bioconda
-#  - pytorch
+  - pytorch
 dependencies:
   - insilicoseq=1.5.4
   - python=3.10
@@ -17,5 +17,4 @@ dependencies:
       - future==0.18.3
       - joblib==1.2.0
       - pyyaml==6.0
-#      - cpuonly
-#      - pytorch==2.0.1
+      - pytorch==2.0.1

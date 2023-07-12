@@ -25,6 +25,7 @@ def generate_ncbi_search_terms(tax_id):
                 for filter_for_db in filters_for_db:
                     terms_temp = [specie_for_search, filter_for_db, filter_for_relevant]
                     terms_for_search.append(''.join(terms_temp) + filter_for_taxonomy + filter_for_complete)
+    terms_for_search.append(f'"txid{tax_id}"')
     return terms_for_search
 
 
@@ -58,14 +59,15 @@ def update_genomes(genomes_dir, abundances, results_dir, n_threads=1):
     genomes_to_download = []
     for entry in range(len(abundances)):
         # change according to the abundancies file 
-        tax_id, specie, abundance = abundances.iloc[entry]
+        tax_id, specie, abundance = abundances[['tax_id', 'species', 'abundance']].iloc[entry]
         assemblies_summary = pd.DataFrame(columns=assembly_summary_cols)
         terms_for_search = generate_ncbi_search_terms(tax_id)
         prepared_abundances.loc[len(prepared_abundances)] = [specie, str(tax_id), abundance]
         fna_filename = str(tax_id) + '.fna.gz'
         if fna_filename not in os.listdir(genomes_dir):
             for term in terms_for_search:
-                assembly_ids = Entrez.read(Entrez.esearch(db="assembly", term=term, retmax=100))['IdList']
+                assemblies_info = Entrez.read(Entrez.esearch(db="assembly", term=term, retmax=100))
+                assembly_ids = assemblies_info['IdList']
                 if len(assembly_ids) > 0:
                     break
             for assembly_id in assembly_ids:

@@ -2,12 +2,12 @@ import os
 import argparse
 import yaml
 import subprocess
+import warnings
 import pandas as pd
 import numpy as np
 from typing import List
-from Bio import Entrez
+from Bio import Entrez, BiopythonDeprecationWarning
 from pysat.examples.hitman import Hitman
-
 from scripts.Genomes_db_update import update_genomes, write_multifasta
 
 GENOMES_DIR = 'genomes'
@@ -269,6 +269,8 @@ if __name__ == '__main__':
         if os.path.exists(os.path.join(GENOMES_DIR, 'multifasta.fna')):
             os.remove(os.path.join(GENOMES_DIR, 'multifasta.fna'))
         if result.returncode == 0:
-            print(f'\nThe metagenome{sample} was successfully generated!')
+            print(f'\nThe sample_{sample} was successfully generated.')
         else:
-            print(f'\nThe metagenome{sample} generation completed with errors.')
+            print(f'\nThe sample_{sample} generation completed with errors.')
+
+    print('\n Metagenomes generation finished!')
