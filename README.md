@@ -20,8 +20,7 @@ This  pipeline takes the input phenotype or environment as a community property 
 To get the tool clone the git repository:
 
 ```bash
-git clone https://github.com/nvaulin/samovar.git
-cd samovar
+git clone https://github.com/nvaulin/samovar.git && cd samovar
 ```
 
 Create a `conda/mamba` environment with necessary packages and activate it:
