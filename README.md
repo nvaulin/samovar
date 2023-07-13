@@ -20,7 +20,7 @@ This  pipeline takes the input phenotype or environment as a community property 
 To get the tool clone the git repository:
 
 ```bash
-https://github.com/nvaulin/samovar.git
+git clone https://github.com/nvaulin/samovar.git
 cd samovar
 ```
 

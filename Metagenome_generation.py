@@ -198,8 +198,8 @@ if __name__ == '__main__':
     metabolites = parse_args().metabolites
     n_core = int(parse_args().n_core)
     n_samples = int(parse_args().n_samples)
-    n_reads = int(parse_args().n_reads)
     n_threads = int(parse_args().threads)
+    n_reads = parse_args().n_reads
     RESULTS_DIR = parse_args().out_dir
     core_selection_model = parse_args().c_model
     abundance_selection_model = parse_args().a_model
@@ -262,7 +262,7 @@ if __name__ == '__main__':
             iss_params = iss_params | yaml_iss_params
 
         if n_reads is not None:
-            iss_params['--n_reads'] = n_reads
+            iss_params['--n_reads'] = int(n_reads)
 
         iss_cmd = ['iss', 'generate'] + [str(item) for pair in iss_params.items() for item in pair]
         result = subprocess.run(iss_cmd)
