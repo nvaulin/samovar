@@ -28,11 +28,11 @@ def parse_args():
     parser.add_argument('--c_model', default='primitive', nargs='?',
                         help='model for core metagenome selection ("primitive", "random", "weighted", "weighted_lognormal",  "weighted_exponential", "shannon")')
     parser.add_argument('--a_model', default='mean', nargs='?',
-                        help='model for species abundances selection ("mean", "exponential", "normal', "lognormal")
-    ')
+                        help='model for species abundances selection ("mean", "exponential", "normal", "lognormal")')
     parser.add_argument('-c', '--n_core', default=None, nargs='?', help='number of core species to leave in metagenome')
     parser.add_argument('-t', '--threads', default=1, help='number of threads (cores)')
     parser.add_argument('-n', '--n_samples', default=1, nargs='?', help='number of generated metagenome samples')
+    parser.add_argument('-r', '--n_reads', default=None, nargs='?', help='number of reads to generate (if set, overwrites the number present in iss_params.yml)  ')
     parser.add_argument('-o', '--out_dir', default='results', nargs='?',
                         help='path to directory to save generated files')
     parser.add_argument('--email', default='example@email.com', nargs='?', help='Email address for Entrez requests')
@@ -73,7 +73,7 @@ def generate_core_metagenome(total_metagenome: pd.DataFrame, metagenome_size: in
                 total_metagenome['mean_abundance'])
             core = total_metagenome.sample(n=metagenome_size, weights='shannon_index').drop(columns=('shannon_index'))
         case _:
-            raise ValueError(f"Unknown model for core metagenome selection: {c_model}")
+            raise ValueError(f"Unknown model for core metagenome selection: {c_model}\nCan be one of 'primitive', 'random', 'weighted', 'weighted_lognormal', 'weighted_exponential', 'shannon'.")
 
     match a_model:
         case 'mean':
@@ -88,7 +88,7 @@ def generate_core_metagenome(total_metagenome: pd.DataFrame, metagenome_size: in
         case 'lognormal':
             core['abundance'] = np.random.lognormal(mean=core['mean_abundance'], sigma=core['sd_abundance'])
         case _:
-            raise ValueError(f"Unknown model for species abundances selection: {a_model}")
+            raise ValueError(f"Unknown model for species abundances selection: {a_model}\nCan be one of 'mean', 'exponential', 'normal', 'lognormal'.")
     return core
 
 
@@ -198,6 +198,7 @@ if __name__ == '__main__':
     metabolites = parse_args().metabolites
     n_core = int(parse_args().n_core)
     n_samples = int(parse_args().n_samples)
+    n_reads = int(parse_args().n_reads)
     n_threads = int(parse_args().threads)
     RESULTS_DIR = parse_args().out_dir
     core_selection_model = parse_args().c_model
@@ -259,6 +260,9 @@ if __name__ == '__main__':
         with open('iss_params.yml', 'r') as f:
             yaml_iss_params = yaml.safe_load(f)
             iss_params = iss_params | yaml_iss_params
+
+        if n_reads is not None:
+            iss_params['--n_reads'] = n_reads
 
         iss_cmd = ['iss', 'generate'] + [str(item) for pair in iss_params.items() for item in pair]
         result = subprocess.run(iss_cmd)
