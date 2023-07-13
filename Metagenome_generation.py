@@ -14,10 +14,8 @@ GENOMES_DIR = 'genomes'
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(
-        usage='Metagenome_generation.py [PHENO]  ...',
-        description='''Generate Illumina reads for the  described metagenome in the FILE. '''
-    )
+    parser = argparse.ArgumentParser(usage='Metagenome_generation.py [PHENO]  ...',
+                                     description='''Generate Illumina reads for the  described metagenome in the FILE. ''')
 
     parser.add_argument('-p', '--phenotype', default='2_species', nargs='?',
                         help='the base phenotype for metagenome construction ("Health", "HIV")')
@@ -28,69 +26,69 @@ def parse_args():
     parser.add_argument('--metabolites', default=None, nargs='?',
                         help='read metabolites, format: KEGG Compound ID (e.g. C07274)')
     parser.add_argument('--c_model', default='primitive', nargs='?',
-                        help='model for core metagenome selection ("primitive", "random", "weighted", "shannon")')
+                        help='model for core metagenome selection ("primitive", "random", "weighted", "weighted_lognormal",  "weighted_exponential", "shannon")')
     parser.add_argument('--a_model', default='mean', nargs='?',
-                        help='model for species abundances selection ("mean", "normal", "lognormal")')
-    parser.add_argument('-c', '--n_core', default=None, nargs='?',
-                        help='number of core species to leave in metagenome')
+                        help='model for species abundances selection ("mean", "exponential", "normal', "lognormal")
+    ')
+    parser.add_argument('-c', '--n_core', default=None, nargs='?', help='number of core species to leave in metagenome')
     parser.add_argument('-t', '--threads', default=1, help='number of threads (cores)')
-    parser.add_argument('-n', '--n_samples', default=1, nargs='?',
-                        help='number of generated metagenome samples')
+    parser.add_argument('-n', '--n_samples', default=1, nargs='?', help='number of generated metagenome samples')
     parser.add_argument('-o', '--out_dir', default='results', nargs='?',
                         help='path to directory to save generated files')
-    parser.add_argument('--email', default='example@email.com', nargs='?',
-                        help='Email address for Entrez requests')
-    parser.add_argument('--api_key', default=None, nargs='?',
-                        help='NCBI API key for Entrez requests (if any)')
+    parser.add_argument('--email', default='example@email.com', nargs='?', help='Email address for Entrez requests')
+    parser.add_argument('--api_key', default=None, nargs='?', help='NCBI API key for Entrez requests (if any)')
 
     return parser.parse_args()
 
 
-def generate_core_metagenome(total_metagenome: pd.DataFrame, metagenome_size: int, c_model: str,
-                             a_model: str) -> pd.DataFrame:
+def generate_core_metagenome(total_metagenome: pd.DataFrame, metagenome_size: int,
+                             c_model: str, a_model: str) -> pd.DataFrame:
     """
     Generate a core metagenome by selecting the most abundant species from the given genomes.
 
     Args:
         total_metagenome: A pandas DataFrame with three columns, the first containing taxid, second - species name and third containing abundance levels.
         metagenome_size: The number of species to select for the core metagenome.
-        c_model: The model to use for core metagenome selection. Can be one of 'primitive', 'random', 'weighted', 'shannon'.
-        a_model: The model to use for species abundances selection. Can be one of 'mean', 'normal', 'lognormal'.
+        c_model: The model to use for core metagenome selection. Can be one of 'primitive', 'random', 'weighted', 'weighted_lognormal', 'weighted_exponential', 'shannon'.
+        a_model: The model to use for species abundances selection. Can be one of 'mean', 'exponential', 'normal', 'lognormal'.
     Returns:
         A pandas DataFrame with the core metagenome.
     """
+    match c_model:
+        case 'primitive':
+            core = total_metagenome.sort_values(by='mean_abundance', ascending=False).head(metagenome_size)
+        case 'random':
+            core = total_metagenome.sample(n=metagenome_size)
+        case 'weighted':
+            core = total_metagenome.sample(n=metagenome_size, weights='mean_abundance')
+        case 'weighted_lognormal':
+            core = total_metagenome.sample(n=metagenome_size,
+                                           weights=np.random.lognormal(total_metagenome['mean_abundance'],
+                                                                       total_metagenome['sd_abundance']))
+        case 'weighted_exponential':
+            core = total_metagenome.sample(n=metagenome_size,
+                                           weights=np.random.exponential(scale=total_metagenome['mean_abundance']))
+        case 'shannon':
+            total_metagenome['shannon_index'] = - total_metagenome['mean_abundance'] * np.log(
+                total_metagenome['mean_abundance'])
+            core = total_metagenome.sample(n=metagenome_size, weights='shannon_index').drop(columns=('shannon_index'))
+        case _:
+            raise ValueError(f"Unknown model for core metagenome selection: {c_model}")
 
-    if c_model == 'primitive':
-        core = total_metagenome.sort_values(by='mean_abundance', ascending=False).head(metagenome_size)
-    elif c_model == 'random':
-        core = total_metagenome.sample(n=metagenome_size)
-    elif c_model == 'weighted':
-        core = total_metagenome.sample(n=metagenome_size, weights='mean_abundance')
-    elif c_model == 'random_weighted':
-        pass
-        # TO-DO random weight from normal distr
-        # core = total_metagenome.sample(n=metagenome_size, weights=np.random.normal(core['mean_abundance'], core['sd_abundance']))
-    elif c_model == 'shannon':
-        total_metagenome['shannon_index'] = - total_metagenome['mean_abundance'] * np.log(
-            total_metagenome['mean_abundance'])
-        core = total_metagenome.sample(n=metagenome_size, weights='shannon_index')
-    else:
-        raise ValueError(f"Unknown model for core metagenome selection: {c_model}")
-
-    if a_model == 'mean':
-        core['abundance'] = core['mean_abundance']
-    elif a_model == 'exponential':
-        pass  # TO-DO
-    elif a_model == 'normal':
-        core['abundance'] = np.random.normal(core['mean_abundance'], core['sd_abundance'])
-        while (core['abundance'] <= 0).any():
-            core.loc[core['abundance'] <= 0, 'abundance'] = np.random.normal(core['mean_abundance'],
-                                                                             core['sd_abundance'])
-    elif a_model == 'lognormal':
-        core['abundance'] = np.random.lognormal(mean=np.log(core['mean_abundance']), sigma=core['sd_abundance'])
-    else:
-        raise ValueError(f"Unknown model for species abundances selection: {a_model}")
-
+    match a_model:
+        case 'mean':
+            core['abundance'] = core['mean_abundance']
+        case 'exponential':
+            core['abundance'] = np.random.exponential(scale=core['mean_abundance'])
+        case 'normal':
+            core['abundance'] = np.random.normal(core['mean_abundance'], core['sd_abundance'])
+            while (core['abundance'] <= 0).any():
+                core.loc[core['abundance'] <= 0, 'abundance'] = np.random.normal(core['mean_abundance'],
+                                                                                 core['sd_abundance'])
+        case 'lognormal':
+            core['abundance'] = np.random.lognormal(mean=core['mean_abundance'], sigma=core['sd_abundance'])
+        case _:
+            raise ValueError(f"Unknown model for species abundances selection: {a_model}")
     return core
 
 
@@ -125,8 +123,8 @@ def do_hits(metagenome: pd.DataFrame, metabolic_needs: list[list], total_metagen
     return best_hit
 
 
-def find_minimal_refill(metagenome: pd.DataFrame, metabolites_specified: List[str],
-                        pathways_db: pd.DataFrame, total_metagenome) -> List[str]:
+def find_minimal_refill(metagenome: pd.DataFrame, metabolites_specified: List[str], pathways_db: pd.DataFrame,
+                        total_metagenome) -> List[str]:
     """
     Given a metagenome composition, a list of metabolites, and a pathways database,
     find the minimal set of additional species that are needed to account for the given metabolites.
@@ -226,8 +224,8 @@ if __name__ == '__main__':
                               index_col='Pathways')
 
     metagenome_size = min(n_core, len(baseline_abundances)) if n_core else len(baseline_abundances)
-    abundances = generate_core_metagenome(baseline_abundances, metagenome_size,
-                                          core_selection_model, abundance_selection_model)
+    abundances = generate_core_metagenome(baseline_abundances, metagenome_size, core_selection_model,
+                                          abundance_selection_model)
 
     for sample in range(1, n_samples + 1):
         to_refill = []
@@ -254,13 +252,10 @@ if __name__ == '__main__':
                                              n_threads)
         wr_code = write_multifasta(prepared_abundances, GENOMES_DIR)
 
-        iss_params = {
-            '-g': os.path.join(GENOMES_DIR, 'multifasta.fna'),
-            '--abundance_file': os.path.join(RESULTS_DIR, f'sample_{sample}', 'abundances_for_iss.txt'),
-            '-m': 'miseq',
-            '-o': os.path.join(RESULTS_DIR, f'sample_{sample}', 'miseq_reads'),
-            '--cpus': n_threads
-        }
+        iss_params = {'-g': os.path.join(GENOMES_DIR, 'multifasta.fna'),
+                      '--abundance_file': os.path.join(RESULTS_DIR, f'sample_{sample}', 'abundances_for_iss.txt'),
+                      '-m': 'miseq',
+                      '-o': os.path.join(RESULTS_DIR, f'sample_{sample}', 'miseq_reads'), '--cpus': n_threads}
         with open('iss_params.yml', 'r') as f:
             yaml_iss_params = yaml.safe_load(f)
             iss_params = iss_params | yaml_iss_params
