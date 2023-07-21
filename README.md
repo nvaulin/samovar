@@ -30,6 +30,12 @@ conda env create -f environment.yml
 conda activate samovar
 ```
 
+Then update ingredients for the samovar (genomes database, 5.5 Gb):
+
+```bash
+wget https://www.dropbox.com/sh/goeh43tyhu62es3/AADT2w0FBB8kT1z0dXqt-UHKa\?dl\=0 -O genomes_files && unzip -o genomes_files -d genomes
+```
+
 ### Usage
 
 To run the script, just call it from the directory where the tool is located:
@@ -44,19 +50,36 @@ Usage options:
 options:
   -h, --help            show this help message and exit
   -p [PHENOTYPE], --phenotype [PHENOTYPE]
-                        the base phenotype for metagenome construction ("Health", "HIV", ... )
+                        the base phenotype for metagenome construction
+                        ("Health", "HIV")
   -m [METAGENOME_FILE], --metagenome_file [METAGENOME_FILE]
-                        read metagenome composition from the file (tsv with species and abundances)
+                        read metagenome composition from the file (tsv with
+                        species and abundances)
   --pathways [PATHWAYS]
-                        read matebolic pathways to account from the file (each pathway on the new line
+                        read matebolic pathways to account from the file (each
+                        pathway on the new line
   --metabolites [METABOLITES]
-                        read metabolites, format: KEGG Compound ID (consult readme for avaliable options)
+                        read metabolites, format: KEGG Compound ID (e.g.
+                        C07274)
+  --c_model [C_MODEL]   model for core metagenome selection ("primitive",
+                        "random", "weighted", "weighted_lognormal",
+                        "weighted_exponential", "shannon")
+  --a_model [A_MODEL]   model for species abundances selection ("mean",
+                        "exponential", "normal", "lognormal")
   -c [N_CORE], --n_core [N_CORE]
                         number of core species to leave in metagenome
   -t THREADS, --threads THREADS
                         number of threads (cores)
+  -n [N_SAMPLES], --n_samples [N_SAMPLES]
+                        number of generated metagenome samples
+  -r [N_READS], --n_reads [N_READS]
+                        number of reads to generate (if set, overwrites the
+                        number present in iss_params.yml)
+  -o [OUT_DIR], --out_dir [OUT_DIR]
+                        path to directory to save generated files
   --email [EMAIL]       Email address for Entrez requests
   --api_key [API_KEY]   NCBI API key for Entrez requests (if any)
+
 ```
 
 Additional *InSilicoSeq* reads generation parameters (such as number of reads, error model, etc) can be also specified in the `iss_params.yml` file (the full list of the *InSilicoSeq* parameters can be found in it's [documentation](https://insilicoseq.readthedocs.io/en/latest/)).
