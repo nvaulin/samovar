@@ -164,13 +164,13 @@ def find_minimal_refill(metagenome: pd.DataFrame, metabolites_specified: List[st
     return do_hits(metagenome, metabolic_needs, total_metagenome)
 
 
-def append_species_refill(metagenome: pd.DataFrame, to_refill: set) -> pd.DataFrame:
+def append_species_refill(metagenome: pd.DataFrame, species_to_refill: set) -> pd.DataFrame:
     """
     Append species to an existing dataframe of abundances and adjust abundance levels to maintain normalization.
 
     Args:
         metagenome (pd.DataFrame): Metagenome dataframe (with columns ['tax_id', 'species', 'mean_abundance', 'sd_abundance'])
-        to_refill (set): Species ids and names to add to the abundance dataframe.
+        species_to_refill (set): Species ids and names to add to the abundance dataframe.
     Returns:
         A pandas DataFrame with the new species added and abundance levels adjusted to maintain normalization.
     Raises:
@@ -179,12 +179,12 @@ def append_species_refill(metagenome: pd.DataFrame, to_refill: set) -> pd.DataFr
     """
     # TO-DO: check columns and names
     abundance_level = metagenome.abundance.mean()
-    abundances_refill = pd.DataFrame(to_refill)
-    abundances_refill['abundance'] = [abundance_level] * len(to_refill)
-    abundances_refill.columns = core_metagenome.columns
-    abundances_new = pd.concat([metagenome, abundances_refill])
-    abundances_new['abundance'] = abundances_new.abundance / abundances_new.abundance.sum()
-    return abundances_new
+    species_to_refill = pd.DataFrame(species_to_refill)
+    species_to_refill['abundance'] = [abundance_level] * len(to_refill)
+    species_to_refill.columns = metagenome.columns
+    metagenome_new = pd.concat([metagenome, species_to_refill])
+    metagenome_new['abundance'] = metagenome_new.abundance / metagenome_new.abundance.sum()
+    return metagenome_new
 
 
 def read_pathways(pathways_input: str) -> List[str]:
@@ -247,14 +247,14 @@ if __name__ == '__main__':
 
     metagenome_size = min(n_core, len(baseline_abundances)) if n_core else len(baseline_abundances)
     core_metagenome = generate_core_metagenome(baseline_abundances, metagenome_size, core_selection_model,
-                                          abundance_selection_model)
+                                               abundance_selection_model)
 
     for sample in range(1, n_samples + 1):
         dir = os.path.join(RESULTS_DIR, f'sample_{sample}')
 
         # Metagenome update
-        to_refill = []
-        
+        species_to_refill = []
+
         # Core metagenome update from metabolites
         if metabolites is not None:
             for metabolite in metabolites:
@@ -263,20 +263,22 @@ if __name__ == '__main__':
         if os.path.isfile('bacteria_metab.txt'):
             with open('bacteria_metab.txt', 'r') as file:
                 for taxid_specie in file:
-                    to_refill.append(tuple(taxid_specie.split(",")))
+                    species_to_refill.append(tuple(taxid_specie.split(",")))
 
         # Core metagenome update from pathways
         if pathways is not None:
             print('Reading required pathways...')
             pathways_specified = read_pathways(pathways)
-            to_refill = find_minimal_refill(core_metagenome, pathways_specified, pathways_db, baseline_abundances)
+            species_to_refill = find_minimal_refill(core_metagenome, pathways_specified,
+                                                    pathways_db, baseline_abundances)
 
-        if to_refill:
-            core_metagenome = append_species_refill(core_metagenome, to_refill)
+        if species_to_refill:
+            core_metagenome = append_species_refill(core_metagenome, species_to_refill)
 
-        prepared_abundances = update_genomes(GENOMES_DIR, core_metagenome, os.path.join(RESULTS_DIR, f'sample_{sample}'),
+        prepared_metagenome = update_genomes(core_metagenome, GENOMES_DIR,
+                                             os.path.join(RESULTS_DIR, f'sample_{sample}'),
                                              n_threads)
-        wr_code = write_multifasta(prepared_abundances, GENOMES_DIR)
+        wr_code = write_multifasta(prepared_metagenome, GENOMES_DIR)
 
         iss_params = {'-g': os.path.join(GENOMES_DIR, 'multifasta.fna'),
                       '--abundance_file': os.path.join(RESULTS_DIR, f'sample_{sample}', 'abundances_for_iss.txt'),
