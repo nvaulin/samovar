@@ -47,7 +47,7 @@ def drop_missing_genomes(metagenome, missing_genomes):
     Drop missing genomes from the baseline metagenome.
 
     Args:
-        metagenome: A pandas DataFrame with baseline metagenome.
+        metagenome (pd.DataFrame): Metagenome dataframe (with columns ['tax_id', 'species', 'mean_abundance', 'sd_abundance'])
         missing_genomes: A pandas DataFrame containing the tax_id and name for species without an assembly in NCBI.
     Returns:
         A pandas DataFrame with the missing genomes dropped.
@@ -62,10 +62,12 @@ def generate_core_metagenome(total_metagenome: pd.DataFrame, metagenome_size: in
     Generate a core metagenome by selecting the most abundant species from the given genomes.
 
     Args:
-        total_metagenome: A pandas DataFrame with three columns, the first containing taxid, second - species name and third containing abundance levels.
+        total_metagenome (pd.DataFrame): Metagenome dataframe (with columns ['tax_id', 'species', 'mean_abundance', 'sd_abundance'])
         metagenome_size: The number of species to select for the core metagenome.
-        c_model: The model to use for core metagenome selection. Can be one of 'primitive', 'random', 'weighted', 'weighted_lognormal', 'weighted_exponential', 'shannon'.
-        a_model: The model to use for species abundances selection. Can be one of 'mean', 'exponential', 'normal', 'lognormal'.
+        c_model: The model to use for core metagenome selection.
+                    Can be one of 'primitive', 'random', 'weighted', 'weighted_lognormal', 'weighted_exponential', 'shannon'.
+        a_model: The model to use for species abundances selection.
+                    Can be one of 'mean', 'exponential', 'normal', 'lognormal'.
     Returns:
         A pandas DataFrame with the core metagenome.
     """
@@ -112,7 +114,7 @@ def do_hits(metagenome: pd.DataFrame, metabolic_needs: list[list], total_metagen
     in a given metabolic database.
 
     Args:
-    metagenome (pd.DataFrame): Baseline metagenome (total or core)
+    metagenome (pd.DataFrame): Metagenome dataframe (with columns ['tax_id', 'species', 'mean_abundance', 'sd_abundance'])
     metabolic_needs (List[List[str]]): A list of lists of metabolites required for each metabolic pathway.
     total_metagenome (pd.DataFrame): Total baseline metagenome
 
@@ -144,7 +146,7 @@ def find_minimal_refill(metagenome: pd.DataFrame, metabolites_specified: List[st
     find the minimal set of additional species that are needed to account for the given metabolites.
 
     Args:
-        metagenome (pd.Dataframe): Baseline metagenome (total or core)
+        metagenome (pd.DataFrame): Metagenome dataframe (with columns ['tax_id', 'species', 'mean_abundance', 'sd_abundance'])
         metabolites_specified (List[str]): A list of metabolite names that need to be accounted for.
         pathways_db (pd.DataFrame): A pandas DataFrame containing the pathways database,
             where rows represent metabolites and columns represent pathways.
@@ -162,26 +164,27 @@ def find_minimal_refill(metagenome: pd.DataFrame, metabolites_specified: List[st
     return do_hits(metagenome, metabolic_needs, total_metagenome)
 
 
-def append_species_refill(abudances: pd.DataFrame, to_refill: set) -> pd.DataFrame:
+def append_species_refill(metagenome: pd.DataFrame, to_refill: set) -> pd.DataFrame:
     """
     Append species to an existing dataframe of abundances and adjust abundance levels to maintain normalization.
 
     Args:
-        abudances: A pandas DataFrame with three columns, the first containing taxid, second - species name and third containing abundance levels.
-        to_refill: A set of species ids and names to add to the abundance dataframe.
+        metagenome (pd.DataFrame): Metagenome dataframe (with columns ['tax_id', 'species', 'mean_abundance', 'sd_abundance'])
+        to_refill (set): Species ids and names to add to the abundance dataframe.
     Returns:
         A pandas DataFrame with the new species added and abundance levels adjusted to maintain normalization.
     Raises:
         ValueError: If the input dataframe does not have the expected two columns, or if the second column
             does not contain numeric data.
     """
-    abundance_level = abudances.abundance.mean()
+    # TO-DO: check columns and names
+    abundance_level = metagenome.abundance.mean()
     abundances_refill = pd.DataFrame(to_refill)
     abundances_refill['abundance'] = [abundance_level] * len(to_refill)
-    abundances_refill.columns = abundances.columns
-    abudances_new = pd.concat([abudances, abundances_refill])
-    abudances_new['abundance'] = abudances_new.abundance / abudances_new.abundance.sum()
-    return abudances_new
+    abundances_refill.columns = core_metagenome.columns
+    abundances_new = pd.concat([metagenome, abundances_refill])
+    abundances_new['abundance'] = abundances_new.abundance / abundances_new.abundance.sum()
+    return abundances_new
 
 
 def read_pathways(pathways_input: str) -> List[str]:
@@ -243,31 +246,35 @@ if __name__ == '__main__':
                               index_col='Pathways')
 
     metagenome_size = min(n_core, len(baseline_abundances)) if n_core else len(baseline_abundances)
-    abundances = generate_core_metagenome(baseline_abundances, metagenome_size, core_selection_model,
+    core_metagenome = generate_core_metagenome(baseline_abundances, metagenome_size, core_selection_model,
                                           abundance_selection_model)
 
     for sample in range(1, n_samples + 1):
-        to_refill = []
         dir = os.path.join(RESULTS_DIR, f'sample_{sample}')
 
+        # Metagenome update
+        to_refill = []
+        
+        # Core metagenome update from metabolites
         if metabolites is not None:
             for metabolite in metabolites:
                 metabol_cmd = f'python clusters.py -M {metabolite} -P {pheno}'
                 result = subprocess.run(metabol_cmd.split())
+        if os.path.isfile('bacteria_metab.txt'):
+            with open('bacteria_metab.txt', 'r') as file:
+                for taxid_specie in file:
+                    to_refill.append(tuple(taxid_specie.split(",")))
 
+        # Core metagenome update from pathways
         if pathways is not None:
             print('Reading required pathways...')
             pathways_specified = read_pathways(pathways)
-            to_refill = find_minimal_refill(abundances, pathways_specified, pathways_db, baseline_abundances)
+            to_refill = find_minimal_refill(core_metagenome, pathways_specified, pathways_db, baseline_abundances)
 
-        if os.path.isfile('bacteria_metab.txt'):
-            with open('bacteria_metab.txt', 'r') as file:
-                for tx_sp in file:
-                    to_refill.append(tuple(tx_sp.split(",")))
         if to_refill:
-            abundances = append_species_refill(abundances, to_refill)
+            core_metagenome = append_species_refill(core_metagenome, to_refill)
 
-        prepared_abundances = update_genomes(GENOMES_DIR, abundances, os.path.join(RESULTS_DIR, f'sample_{sample}'),
+        prepared_abundances = update_genomes(GENOMES_DIR, core_metagenome, os.path.join(RESULTS_DIR, f'sample_{sample}'),
                                              n_threads)
         wr_code = write_multifasta(prepared_abundances, GENOMES_DIR)
 
