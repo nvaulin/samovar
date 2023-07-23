@@ -81,10 +81,7 @@ def generate_core_metagenome(total_metagenome: pd.DataFrame, metagenome_size: in
         case 'exponential':
             core['abundance'] = np.random.exponential(scale=core['mean_abundance'])
         case 'normal':
-            core['abundance'] = np.random.normal(core['mean_abundance'], core['sd_abundance'])
-            while (core['abundance'] <= 0).any():
-                core.loc[core['abundance'] <= 0, 'abundance'] = np.random.normal(core['mean_abundance'],
-                                                                                 core['sd_abundance'])
+            core['abundance'] = np.abs(np.random.normal(core['mean_abundance'], core['sd_abundance']))
         case 'lognormal':
             core['abundance'] = np.random.lognormal(mean=core['mean_abundance'], sigma=core['sd_abundance'])
         case _:
