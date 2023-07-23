@@ -248,6 +248,8 @@ if __name__ == '__main__':
     metagenome_size = min(n_core, len(baseline_abundances)) if n_core else len(baseline_abundances)
     core_metagenome = generate_core_metagenome(baseline_abundances, metagenome_size, core_selection_model,
                                                abundance_selection_model)
+    with open('iss_params.yml', 'r') as f:
+        yaml_iss_params = yaml.safe_load(f)
 
     for sample in range(1, n_samples + 1):
         dir = os.path.join(RESULTS_DIR, f'sample_{sample}')
@@ -284,13 +286,9 @@ if __name__ == '__main__':
                       '--abundance_file': os.path.join(RESULTS_DIR, f'sample_{sample}', 'abundances_for_iss.txt'),
                       '-m': 'miseq', '-o': os.path.join(RESULTS_DIR, f'sample_{sample}', 'miseq_reads'),
                       '--cpus': n_threads}
-        with open('iss_params.yml', 'r') as f:
-            yaml_iss_params = yaml.safe_load(f)
-            iss_params = iss_params | yaml_iss_params
-
+        iss_params = iss_params | yaml_iss_params
         if n_reads is not None:
             iss_params['--n_reads'] = int(n_reads)
-
         iss_cmd = ['iss', 'generate'] + [str(item) for pair in iss_params.items() for item in pair]
         result = subprocess.run(iss_cmd)
 
