@@ -32,7 +32,8 @@ def parse_args():
     parser.add_argument('-c', '--n_core', default=None, nargs='?', help='number of core species to leave in metagenome')
     parser.add_argument('-t', '--threads', default=1, help='number of threads (cores)')
     parser.add_argument('-n', '--n_samples', default=1, nargs='?', help='number of generated metagenome samples')
-    parser.add_argument('-r', '--n_reads', default=None, nargs='?', help='number of reads to generate (if set, overwrites the number present in iss_params.yml)  ')
+    parser.add_argument('-r', '--n_reads', default=None, nargs='?',
+                        help='number of reads to generate (if set, overwrites the number present in iss_params.yml)  ')
     parser.add_argument('-o', '--out_dir', default='results', nargs='?',
                         help='path to directory to save generated files')
     parser.add_argument('--email', default='example@email.com', nargs='?', help='Email address for Entrez requests')
@@ -41,8 +42,22 @@ def parse_args():
     return parser.parse_args()
 
 
-def generate_core_metagenome(total_metagenome: pd.DataFrame, metagenome_size: int,
-                             c_model: str, a_model: str) -> pd.DataFrame:
+def drop_missing_genomes(metagenome, missing_genomes):
+    """
+    Drop missing genomes from the baseline metagenome.
+
+    Args:
+        metagenome: A pandas DataFrame with baseline metagenome.
+        missing_genomes: A pandas DataFrame containing the tax_id and name for species without an assembly in NCBI.
+    Returns:
+        A pandas DataFrame with the missing genomes dropped.
+    """
+    metagenome = metagenome[~metagenome['tax_id'].isin(missing_genomes['tax_id'])]
+    return metagenome
+
+
+def generate_core_metagenome(total_metagenome: pd.DataFrame, metagenome_size: int, c_model: str,
+                             a_model: str) -> pd.DataFrame:
     """
     Generate a core metagenome by selecting the most abundant species from the given genomes.
 
@@ -73,7 +88,8 @@ def generate_core_metagenome(total_metagenome: pd.DataFrame, metagenome_size: in
                 total_metagenome['mean_abundance'])
             core = total_metagenome.sample(n=metagenome_size, weights='shannon_index').drop(columns=('shannon_index'))
         case _:
-            raise ValueError(f"Unknown model for core metagenome selection: {c_model}\nCan be one of 'primitive', 'random', 'weighted', 'weighted_lognormal', 'weighted_exponential', 'shannon'.")
+            raise ValueError(
+                f"Unknown model for core metagenome selection: {c_model}\nCan be one of 'primitive', 'random', 'weighted', 'weighted_lognormal', 'weighted_exponential', 'shannon'.")
 
     match a_model:
         case 'mean':
@@ -85,7 +101,8 @@ def generate_core_metagenome(total_metagenome: pd.DataFrame, metagenome_size: in
         case 'lognormal':
             core['abundance'] = np.random.lognormal(mean=core['mean_abundance'], sigma=core['sd_abundance'])
         case _:
-            raise ValueError(f"Unknown model for species abundances selection: {a_model}\nCan be one of 'mean', 'exponential', 'normal', 'lognormal'.")
+            raise ValueError(
+                f"Unknown model for species abundances selection: {a_model}\nCan be one of 'mean', 'exponential', 'normal', 'lognormal'.")
     return core
 
 
@@ -212,7 +229,11 @@ if __name__ == '__main__':
         os.makedirs(path, exist_ok=True)
 
     baseline_abundances = pd.read_csv(os.path.join('baseline_phenotypes', pheno + '.csv'), header=None, sep=',')
+    missing_genomes = pd.read_csv(os.path.join('baseline_phenotypes', 'missing_genomes', 'missing_genomes.csv'),
+                                  header=None, sep=',')
+
     baseline_abundances.columns = ['tax_id', 'species', 'mean_abundance', 'sd_abundance']
+    baseline_abundances = drop_missing_genomes(baseline_abundances, missing_genomes)
     baseline_abundances['mean_abundance'] = baseline_abundances['mean_abundance'] / baseline_abundances[
         'mean_abundance'].sum()
     baseline_abundances['mean_abundance'].fillna(baseline_abundances['mean_abundance'].mean(), inplace=True)
@@ -252,8 +273,8 @@ if __name__ == '__main__':
 
         iss_params = {'-g': os.path.join(GENOMES_DIR, 'multifasta.fna'),
                       '--abundance_file': os.path.join(RESULTS_DIR, f'sample_{sample}', 'abundances_for_iss.txt'),
-                      '-m': 'miseq',
-                      '-o': os.path.join(RESULTS_DIR, f'sample_{sample}', 'miseq_reads'), '--cpus': n_threads}
+                      '-m': 'miseq', '-o': os.path.join(RESULTS_DIR, f'sample_{sample}', 'miseq_reads'),
+                      '--cpus': n_threads}
         with open('iss_params.yml', 'r') as f:
             yaml_iss_params = yaml.safe_load(f)
             iss_params = iss_params | yaml_iss_params
