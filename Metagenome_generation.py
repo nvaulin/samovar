@@ -233,7 +233,7 @@ if __name__ == '__main__':
 
     baseline_abundances = pd.read_csv(os.path.join('baseline_phenotypes', pheno + '.csv'), header=None, sep=',')
     missing_genomes = pd.read_csv(os.path.join('baseline_phenotypes', 'missing_genomes', 'missing_genomes.csv'),
-                                  header=None, sep=',')
+                                  header=1, sep=',', names=['tax_id', 'species'])
 
     baseline_abundances.columns = ['tax_id', 'species', 'mean_abundance', 'sd_abundance']
     baseline_abundances = drop_missing_genomes(baseline_abundances, missing_genomes)
