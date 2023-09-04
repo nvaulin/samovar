@@ -29,14 +29,44 @@ def generate_ncbi_search_terms(tax_id):
     return terms_for_search
 
 
+def get_assembly_download_link(terms_for_search, assembly_summary_cols, assembly_status_translation):
+    assemblies_summary = pd.DataFrame(columns=assembly_summary_cols)
+    for term in terms_for_search:
+        assemblies_info = Entrez.read(Entrez.esearch(db="assembly", term=term, retmax=100))
+        assembly_ids = assemblies_info['IdList']
+        if len(assembly_ids) > 0:
+            break
+    for assembly_id in assembly_ids:
+        assembly_summary = Entrez.read(Entrez.esummary(db="assembly", id=assembly_id, report="full"))
+        assembly_summary = pd.DataFrame(assembly_summary['DocumentSummarySet']['DocumentSummary'],
+                                        columns=assembly_summary_cols)
+        assemblies_summary = pd.concat([assemblies_summary, assembly_summary])
+    assemblies_summary.replace({"AssemblyStatus": assembly_status_translation}, inplace=True)
+    assemblies_sorted = assemblies_summary.sort_values(['AssemblyStatus', 'ScaffoldN50',
+                                                        'Coverage', 'LastUpdateDate', 'ContigN50'],
+                                                       ascending=[True] + [False] * 4)
+    links = assemblies_sorted[['FtpPath_RefSeq', 'FtpPath_GenBank']].head(1)
+    if links.FtpPath_RefSeq.values:
+        url = links.FtpPath_RefSeq.values[0]
+    elif links.FtpPath_GenBank.values:
+        url = links.FtpPath_GenBank.values[0]
+    else:
+        raise ValueError(f'''No genome assembly found for {specie} (taxid: {tax_id}). 
+                Please, download it manually and store it the {genomes_dir} directory as {fna_filename}''')
+    label = os.path.basename(url)
+    url = url.removeprefix('ftp://')
+    url = 'https://' + url + '/' + label + '_genomic.fna.gz'
+    return url
+
+
 def download_genome(url, fna_filename, genomes_dir):
     urllib.request.urlretrieve(url, os.path.join(genomes_dir, fna_filename))
 
 
-def update_genomes(genomes_dir, abundances, results_dir, n_threads=1):
+def update_genomes(abundances, genomes_dir, results_dir, n_threads=1):
     if not os.path.isdir(genomes_dir):
         os.makedirs(genomes_dir)
-    prepared_abundances = pd.DataFrame(columns=['specie', 'taxid', 'abundance'])
+    prepared_metagenome = pd.DataFrame(columns=['specie', 'taxid', 'abundance'])
     assembly_summary_cols = ['RsUid', 'GbUid', 'AssemblyAccession', 'LastMajorReleaseAccession',
                              'LatestAccession', 'ChainId', 'AssemblyName', 'UCSCName', 'EnsemblName',
                              'Taxid', 'Organism', 'SpeciesTaxid', 'SpeciesName', 'AssemblyType',
@@ -52,45 +82,19 @@ def update_genomes(genomes_dir, abundances, results_dir, n_threads=1):
                              'FtpPath_Assembly_rpt', 'FtpPath_Stats_rpt', 'FtpPath_Regions_rpt',
                              'Busco', 'SortOrder', 'Meta']
 
-    assembly_status_translation = {'Complete Genome': 1,
-                                   'Scaffold': 2,
-                                   'Contig': 3}
+    assembly_statuses = {'Complete Genome': 1,
+                         'Scaffold': 2,
+                         'Contig': 3}
     print(f'Checking {len(abundances)} genomes, it may take some time depending on your internet connection')
     genomes_to_download = []
     for entry in range(len(abundances)):
-        # change according to the abundancies file 
         tax_id, specie, abundance = abundances[['tax_id', 'species', 'abundance']].iloc[entry]
-        assemblies_summary = pd.DataFrame(columns=assembly_summary_cols)
         terms_for_search = generate_ncbi_search_terms(tax_id)
-        prepared_abundances.loc[len(prepared_abundances)] = [specie, str(tax_id), abundance]
+        prepared_metagenome.loc[len(prepared_metagenome)] = [specie, str(tax_id), abundance]
         fna_filename = str(tax_id) + '.fna.gz'
         if fna_filename not in os.listdir(genomes_dir):
-            for term in terms_for_search:
-                assemblies_info = Entrez.read(Entrez.esearch(db="assembly", term=term, retmax=100))
-                assembly_ids = assemblies_info['IdList']
-                if len(assembly_ids) > 0:
-                    break
-            for assembly_id in assembly_ids:
-                assembly_summary = Entrez.read(Entrez.esummary(db="assembly", id=assembly_id, report="full"))
-                assembly_summary = pd.DataFrame(assembly_summary['DocumentSummarySet']['DocumentSummary'],
-                                                columns=assembly_summary_cols)
-                assemblies_summary = pd.concat([assemblies_summary, assembly_summary])
-            assemblies_summary.replace({"AssemblyStatus": assembly_status_translation}, inplace=True)
-            assemblies_sorted = assemblies_summary.sort_values(['AssemblyStatus', 'ScaffoldN50',
-                                                                'Coverage', 'LastUpdateDate', 'ContigN50'],
-                                                               ascending=[True] + [False] * 4)
-            links = assemblies_sorted[['FtpPath_RefSeq', 'FtpPath_GenBank']].head(1)
-            if links.FtpPath_RefSeq.values:
-                url = links.FtpPath_RefSeq.values[0]
-            elif links.FtpPath_GenBank.values:
-                url = links.FtpPath_GenBank.values[0]
-            else:
-                raise ValueError(f'''No genome assembly found for {specie} (taxid: {tax_id}). 
-                        Please, download it manually and store it the {genomes_dir} directory as {fna_filename}''')
-            label = os.path.basename(url)
-            url = url.removeprefix('ftp://')
-            url = 'https://' + url + '/' + label + '_genomic.fna.gz'
-            genomes_to_download.append((url, fna_filename))
+            assembly_link = get_assembly_download_link(terms_for_search, assembly_summary_cols, assembly_statuses)
+            genomes_to_download.append((assembly_link, fna_filename))
 
     if genomes_to_download:
         print(f'Downloading {len(genomes_to_download)} genomes')
@@ -100,12 +104,12 @@ def update_genomes(genomes_dir, abundances, results_dir, n_threads=1):
             concurrent.futures.wait(futures)
 
     print(f'Genomes prepared, writing {results_dir}/metagenome_composition.txt file')
-    prepared_abundances.abundance = prepared_abundances.abundance / prepared_abundances.abundance.sum()
-    prepared_abundances.to_csv(os.path.join(results_dir, 'metagenome_composition.txt'), sep='\t', index=False,
+    prepared_metagenome.abundance = prepared_metagenome.abundance / prepared_metagenome.abundance.sum()
+    prepared_metagenome.to_csv(os.path.join(results_dir, 'metagenome_composition.txt'), sep='\t', index=False,
                                header=False)
-    prepared_abundances[['taxid', 'abundance']].to_csv(os.path.join(results_dir, 'abundances_for_iss.txt'), sep='\t',
+    prepared_metagenome[['taxid', 'abundance']].to_csv(os.path.join(results_dir, 'abundances_for_iss.txt'), sep='\t',
                                                        index=False, header=False)
-    return prepared_abundances
+    return prepared_metagenome
 
 
 def write_multifasta(prepared_abudances, genomes_dir):

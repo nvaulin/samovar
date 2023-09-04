@@ -32,7 +32,8 @@ def parse_args():
     parser.add_argument('-c', '--n_core', default=None, nargs='?', help='number of core species to leave in metagenome')
     parser.add_argument('-t', '--threads', default=1, help='number of threads (cores)')
     parser.add_argument('-n', '--n_samples', default=1, nargs='?', help='number of generated metagenome samples')
-    parser.add_argument('-r', '--n_reads', default=None, nargs='?', help='number of reads to generate (if set, overwrites the number present in iss_params.yml)  ')
+    parser.add_argument('-r', '--n_reads', default=None, nargs='?',
+                        help='number of reads to generate (if set, overwrites the number present in iss_params.yml)  ')
     parser.add_argument('-o', '--out_dir', default='results', nargs='?',
                         help='path to directory to save generated files')
     parser.add_argument('--email', default='example@email.com', nargs='?', help='Email address for Entrez requests')
@@ -41,16 +42,32 @@ def parse_args():
     return parser.parse_args()
 
 
-def generate_core_metagenome(total_metagenome: pd.DataFrame, metagenome_size: int,
-                             c_model: str, a_model: str) -> pd.DataFrame:
+def drop_missing_genomes(metagenome, missing_genomes):
+    """
+    Drop missing genomes from the baseline metagenome.
+
+    Args:
+        metagenome (pd.DataFrame): Metagenome dataframe (with columns ['tax_id', 'species', 'mean_abundance', 'sd_abundance'])
+        missing_genomes: A pandas DataFrame containing the tax_id and name for species without an assembly in NCBI.
+    Returns:
+        A pandas DataFrame with the missing genomes dropped.
+    """
+    metagenome = metagenome[~metagenome['tax_id'].isin(missing_genomes['tax_id'])]
+    return metagenome
+
+
+def generate_core_metagenome(total_metagenome: pd.DataFrame, metagenome_size: int, c_model: str,
+                             a_model: str) -> pd.DataFrame:
     """
     Generate a core metagenome by selecting the most abundant species from the given genomes.
 
     Args:
-        total_metagenome: A pandas DataFrame with three columns, the first containing taxid, second - species name and third containing abundance levels.
+        total_metagenome (pd.DataFrame): Metagenome dataframe (with columns ['tax_id', 'species', 'mean_abundance', 'sd_abundance'])
         metagenome_size: The number of species to select for the core metagenome.
-        c_model: The model to use for core metagenome selection. Can be one of 'primitive', 'random', 'weighted', 'weighted_lognormal', 'weighted_exponential', 'shannon'.
-        a_model: The model to use for species abundances selection. Can be one of 'mean', 'exponential', 'normal', 'lognormal'.
+        c_model: The model to use for core metagenome selection.
+                    Can be one of 'primitive', 'random', 'weighted', 'weighted_lognormal', 'weighted_exponential', 'shannon'.
+        a_model: The model to use for species abundances selection.
+                    Can be one of 'mean', 'exponential', 'normal', 'lognormal'.
     Returns:
         A pandas DataFrame with the core metagenome.
     """
@@ -73,7 +90,8 @@ def generate_core_metagenome(total_metagenome: pd.DataFrame, metagenome_size: in
                 total_metagenome['mean_abundance'])
             core = total_metagenome.sample(n=metagenome_size, weights='shannon_index').drop(columns=('shannon_index'))
         case _:
-            raise ValueError(f"Unknown model for core metagenome selection: {c_model}\nCan be one of 'primitive', 'random', 'weighted', 'weighted_lognormal', 'weighted_exponential', 'shannon'.")
+            raise ValueError(
+                f"Unknown model for core metagenome selection: {c_model}\nCan be one of 'primitive', 'random', 'weighted', 'weighted_lognormal', 'weighted_exponential', 'shannon'.")
 
     match a_model:
         case 'mean':
@@ -81,14 +99,12 @@ def generate_core_metagenome(total_metagenome: pd.DataFrame, metagenome_size: in
         case 'exponential':
             core['abundance'] = np.random.exponential(scale=core['mean_abundance'])
         case 'normal':
-            core['abundance'] = np.random.normal(core['mean_abundance'], core['sd_abundance'])
-            while (core['abundance'] <= 0).any():
-                core.loc[core['abundance'] <= 0, 'abundance'] = np.random.normal(core['mean_abundance'],
-                                                                                 core['sd_abundance'])
+            core['abundance'] = np.abs(np.random.normal(core['mean_abundance'], core['sd_abundance']))
         case 'lognormal':
             core['abundance'] = np.random.lognormal(mean=core['mean_abundance'], sigma=core['sd_abundance'])
         case _:
-            raise ValueError(f"Unknown model for species abundances selection: {a_model}\nCan be one of 'mean', 'exponential', 'normal', 'lognormal'.")
+            raise ValueError(
+                f"Unknown model for species abundances selection: {a_model}\nCan be one of 'mean', 'exponential', 'normal', 'lognormal'.")
     return core
 
 
@@ -98,7 +114,7 @@ def do_hits(metagenome: pd.DataFrame, metabolic_needs: list[list], total_metagen
     in a given metabolic database.
 
     Args:
-    metagenome (pd.DataFrame): Baseline metagenome (total or core)
+    metagenome (pd.DataFrame): Metagenome dataframe (with columns ['tax_id', 'species', 'mean_abundance', 'sd_abundance'])
     metabolic_needs (List[List[str]]): A list of lists of metabolites required for each metabolic pathway.
     total_metagenome (pd.DataFrame): Total baseline metagenome
 
@@ -130,7 +146,7 @@ def find_minimal_refill(metagenome: pd.DataFrame, metabolites_specified: List[st
     find the minimal set of additional species that are needed to account for the given metabolites.
 
     Args:
-        metagenome (pd.Dataframe): Baseline metagenome (total or core)
+        metagenome (pd.DataFrame): Metagenome dataframe (with columns ['tax_id', 'species', 'mean_abundance', 'sd_abundance'])
         metabolites_specified (List[str]): A list of metabolite names that need to be accounted for.
         pathways_db (pd.DataFrame): A pandas DataFrame containing the pathways database,
             where rows represent metabolites and columns represent pathways.
@@ -148,26 +164,27 @@ def find_minimal_refill(metagenome: pd.DataFrame, metabolites_specified: List[st
     return do_hits(metagenome, metabolic_needs, total_metagenome)
 
 
-def append_species_refill(abudances: pd.DataFrame, to_refill: set) -> pd.DataFrame:
+def append_species_refill(metagenome: pd.DataFrame, species_to_refill: set) -> pd.DataFrame:
     """
     Append species to an existing dataframe of abundances and adjust abundance levels to maintain normalization.
 
     Args:
-        abudances: A pandas DataFrame with three columns, the first containing taxid, second - species name and third containing abundance levels.
-        to_refill: A set of species ids and names to add to the abundance dataframe.
+        metagenome (pd.DataFrame): Metagenome dataframe (with columns ['tax_id', 'species', 'mean_abundance', 'sd_abundance'])
+        species_to_refill (set): Species ids and names to add to the abundance dataframe.
     Returns:
         A pandas DataFrame with the new species added and abundance levels adjusted to maintain normalization.
     Raises:
         ValueError: If the input dataframe does not have the expected two columns, or if the second column
             does not contain numeric data.
     """
-    abundance_level = abudances.abundance.mean()
-    abundances_refill = pd.DataFrame(to_refill)
-    abundances_refill['abundance'] = [abundance_level] * len(to_refill)
-    abundances_refill.columns = abundances.columns
-    abudances_new = pd.concat([abudances, abundances_refill])
-    abudances_new['abundance'] = abudances_new.abundance / abudances_new.abundance.sum()
-    return abudances_new
+    # TO-DO: check columns and names
+    abundance_level = metagenome.abundance.mean()
+    species_to_refill = pd.DataFrame(species_to_refill)
+    species_to_refill['abundance'] = [abundance_level] * len(to_refill)
+    species_to_refill.columns = metagenome.columns
+    metagenome_new = pd.concat([metagenome, species_to_refill])
+    metagenome_new['abundance'] = metagenome_new.abundance / metagenome_new.abundance.sum()
+    return metagenome_new
 
 
 def read_pathways(pathways_input: str) -> List[str]:
@@ -215,7 +232,11 @@ if __name__ == '__main__':
         os.makedirs(path, exist_ok=True)
 
     baseline_abundances = pd.read_csv(os.path.join('baseline_phenotypes', pheno + '.csv'), header=None, sep=',')
+    missing_genomes = pd.read_csv(os.path.join('baseline_phenotypes', 'missing_genomes', 'missing_genomes.csv'),
+                                  header=1, sep=',', names=['tax_id', 'species'])
+
     baseline_abundances.columns = ['tax_id', 'species', 'mean_abundance', 'sd_abundance']
+    baseline_abundances = drop_missing_genomes(baseline_abundances, missing_genomes)
     baseline_abundances['mean_abundance'] = baseline_abundances['mean_abundance'] / baseline_abundances[
         'mean_abundance'].sum()
     baseline_abundances['mean_abundance'].fillna(baseline_abundances['mean_abundance'].mean(), inplace=True)
@@ -225,45 +246,49 @@ if __name__ == '__main__':
                               index_col='Pathways')
 
     metagenome_size = min(n_core, len(baseline_abundances)) if n_core else len(baseline_abundances)
-    abundances = generate_core_metagenome(baseline_abundances, metagenome_size, core_selection_model,
-                                          abundance_selection_model)
+    core_metagenome = generate_core_metagenome(baseline_abundances, metagenome_size, core_selection_model,
+                                               abundance_selection_model)
+    with open('iss_params.yml', 'r') as f:
+        yaml_iss_params = yaml.safe_load(f)
 
     for sample in range(1, n_samples + 1):
-        to_refill = []
         dir = os.path.join(RESULTS_DIR, f'sample_{sample}')
 
+        # Metagenome update
+        species_to_refill = []
+
+        # Core metagenome update from metabolites
         if metabolites is not None:
             for metabolite in metabolites:
                 metabol_cmd = f'python clusters.py -M {metabolite} -P {pheno}'
                 result = subprocess.run(metabol_cmd.split())
+        if os.path.isfile('bacteria_metab.txt'):
+            with open('bacteria_metab.txt', 'r') as file:
+                for taxid_specie in file:
+                    species_to_refill.append(tuple(taxid_specie.split(",")))
 
+        # Core metagenome update from pathways
         if pathways is not None:
             print('Reading required pathways...')
             pathways_specified = read_pathways(pathways)
-            to_refill = find_minimal_refill(abundances, pathways_specified, pathways_db, baseline_abundances)
+            species_to_refill = find_minimal_refill(core_metagenome, pathways_specified,
+                                                    pathways_db, baseline_abundances)
 
-        if os.path.isfile('bacteria_metab.txt'):
-            with open('bacteria_metab.txt', 'r') as file:
-                for tx_sp in file:
-                    to_refill.append(tuple(tx_sp.split(",")))
-        if to_refill:
-            abundances = append_species_refill(abundances, to_refill)
+        if species_to_refill:
+            core_metagenome = append_species_refill(core_metagenome, species_to_refill)
 
-        prepared_abundances = update_genomes(GENOMES_DIR, abundances, os.path.join(RESULTS_DIR, f'sample_{sample}'),
+        prepared_metagenome = update_genomes(core_metagenome, GENOMES_DIR,
+                                             os.path.join(RESULTS_DIR, f'sample_{sample}'),
                                              n_threads)
-        wr_code = write_multifasta(prepared_abundances, GENOMES_DIR)
+        wr_code = write_multifasta(prepared_metagenome, GENOMES_DIR)
 
         iss_params = {'-g': os.path.join(GENOMES_DIR, 'multifasta.fna'),
                       '--abundance_file': os.path.join(RESULTS_DIR, f'sample_{sample}', 'abundances_for_iss.txt'),
-                      '-m': 'miseq',
-                      '-o': os.path.join(RESULTS_DIR, f'sample_{sample}', 'miseq_reads'), '--cpus': n_threads}
-        with open('iss_params.yml', 'r') as f:
-            yaml_iss_params = yaml.safe_load(f)
-            iss_params = iss_params | yaml_iss_params
-
+                      '-m': 'miseq', '-o': os.path.join(RESULTS_DIR, f'sample_{sample}', 'miseq_reads'),
+                      '--cpus': n_threads}
+        iss_params = iss_params | yaml_iss_params
         if n_reads is not None:
             iss_params['--n_reads'] = int(n_reads)
-
         iss_cmd = ['iss', 'generate'] + [str(item) for pair in iss_params.items() for item in pair]
         result = subprocess.run(iss_cmd)
 
