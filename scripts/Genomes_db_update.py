@@ -112,6 +112,19 @@ def update_genomes(abundances, genomes_dir, results_dir, n_threads=1):
     return prepared_metagenome
 
 
+def download_mags(mags_links, mags_folder):
+    """
+    This function takes a list or np.array (column from the dataframe) with links for each MAG.
+    It downloads MAGs according to the link column and returns nothing.
+    """
+    print(f"Downloading MAGs to {mags_folder}...")
+    for link in mags_links:
+        if link[link.rfind('/'):] not in os.listdir(mags_folder):
+            download_genome(link, link[link.rfind('/')+1:], mags_folder)
+    print("MAGs are downloaded!")
+    return
+
+
 def write_multifasta(prepared_abudances, genomes_dir):
     print('Combining the multifasta.fna')
     sequences = []
@@ -123,4 +136,29 @@ def write_multifasta(prepared_abudances, genomes_dir):
         seq_record = SeqRecord(seq=seq_str, id=tax_id, name=tax_id, description='')
         sequences.append(seq_record)
     wr_code = SeqIO.write(sequences, os.path.join(genomes_dir, 'multifasta.fna'), "fasta-2line")
+    return wr_code
+
+
+def write_multifasta(prepared_abudances_taxids, genomes_dir, dir, mag_abundances_ids=None, mags_dir=None):
+    print('Gathering the multifasta.fna')
+    sequences = []
+
+    for tax_id in prepared_abudances_taxids:
+        seq_str = ''
+        with gzip.open(os.path.join(genomes_dir, f'{tax_id}.fna.gz'), "rt") as handle:
+            for record in SeqIO.parse(handle, "fasta"):
+                seq_str += record.seq.strip('\n')
+        seq_record = SeqRecord(seq=seq_str, id=tax_id, name=tax_id, description='')
+        sequences.append(seq_record)
+
+    if mag_abundances_ids is not None:
+        for mag_id in mag_abundances_ids:
+            seq_str=''
+            with gzip.open(os.path.join(mags_dir, f'{mag_id}.gff.gz'), "rt") as handle:
+                for record in SeqIO.parse(handle, "fasta"):
+                    seq_str += record.seq.strip('\n')
+            seq_record = SeqRecord(seq=seq_str, id=mag_id, name=mag_id, description='')
+            sequences.append(seq_record)
+
+    wr_code = SeqIO.write(sequences, os.path.join(dir, 'multifasta.fna'), "fasta-2line")
     return wr_code
