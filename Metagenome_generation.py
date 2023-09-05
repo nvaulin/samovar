@@ -8,10 +8,11 @@ import numpy as np
 from typing import List
 from Bio import Entrez, BiopythonDeprecationWarning
 from pysat.examples.hitman import Hitman
-from scripts.Genomes_db_update import update_genomes, write_multifasta
+from scripts.Genomes_db_update import update_genomes, write_multifasta, download_mags
 
 GENOMES_DIR = 'genomes'
-
+MAGS_DIR = 'mags'
+MAGS_META = 'mags/mags_metadata.csv'
 
 def parse_args():
     parser = argparse.ArgumentParser(usage='Metagenome_generation.py [PHENO]  ...',
@@ -38,6 +39,7 @@ def parse_args():
                         help='path to directory to save generated files')
     parser.add_argument('--email', default='example@email.com', nargs='?', help='Email address for Entrez requests')
     parser.add_argument('--api_key', default=None, nargs='?', help='NCBI API key for Entrez requests (if any)')
+    parser.add_argument('--add_mags', default=None, nargs='?', help='flag whether to add MAGs or not to the sampling draft')
 
     return parser.parse_args()
 
@@ -208,6 +210,65 @@ def read_pathways(pathways_input: str) -> List[str]:
     return pathways
 
 
+def add_mags_to_sample(species_abundance_table: pd.DataFrame, dir, scaling_factor=0.1, mags_dir=MAGS_DIR, metadata_path=MAGS_META) -> pd.DataFrame:
+    """Reads prepared dataframe with bacteria species and abundancies and adds MAGs.
+
+    Args:
+        species_abundance_table: table with selected species and their abundancies with columns txid, species, mean_abundance, sd_abundance
+        dir: current directory for the sample
+        scaling_factor: value to apply to reference genome abundance, correcter abundance will be: A*sf for mag and A(1-sf) for reference genome
+        mags_dir: directory to store MAGs
+        metadata_path: path to metadata table for MAGs
+    Returns:
+        species_abundances_table: same table to the passed one but with corrected abundances
+        mags_df: table with species and information on corresponding MAG: relative path and abundance 
+    """
+
+    if scaling_factor > 1:
+        raise ValueError('Scaling factor for MAG abundance should be < 1 !')
+
+    print("Performing MAGs assignment...")
+    # checking and creating the proper names column
+    species_abundance_table['species'] = species_abundance_table['species'].apply(lambda x: x.replace(']', '').replace('[', ''))
+    # handling mags metadata
+    metadata = pd.read_csv(metadata_path)
+    sp_to_add, links, abundances = [], [], []
+    reps_counter = dict()
+    
+    for species in species_abundance_table['species']:
+        # checking if the genera is in metadata
+        genera_df = metadata[metadata['genera']==species.split()[0]]
+        if genera_df.shape[0]>0:
+            # checking if species is in metadata
+            species_df = genera_df[genera_df['species'].str.startswith(species, na=False)]
+            df_sel, key = (species_df, species) if species_df.shape[0]>0 else (genera_df, species.split()[0])
+            # if we already added this mag we will select the next one in the table
+            reps_counter[key] = reps_counter[key]+1 if key in reps_counter.keys() else 0
+            if df_sel.shape[0]<reps_counter[key]:
+                pass
+            else:
+                link = df_sel.sort_values(by='N50', ascending=False).iloc[reps_counter[key]]['FTP_download']
+                links.append(link)
+                sp_to_add.append(f'{species}_MAG_{id}')
+                # calculating abundance for MAG
+                abundance_initial = species_abundance_table[species_abundance_table['species'] == species].iloc[0]['abundance']
+                abundances.append(abundance_initial*scaling_factor)
+                # correcting original abundance
+                species_abundance_table.loc[species_abundance_table['species'] == species, 'abundance'] = abundance_initial*(1-scaling_factor)
+                
+    # writing down mags info: names, abundances and download links
+    mags_df = pd.DataFrame({'species': sp_to_add, 'abundance': abundances, 'links': links})
+    mags_df['MAG_id'] = mags_df['links'].apply(lambda x: x[x.rfind('/')+1:-7])
+    mags_df.to_csv(os.path.join(dir, 'MAGs_composition.txt'), sep='\t', index=False, header=False)
+    abundances = pd.concat([species_abundance_table[['taxid', 'abundance']],
+                    mags_df[['MAG_id', 'abundance']].rename(columns={'MAG_id':'taxid'})], ignore_index=True)
+    abundances.to_csv(os.path.join(dir, 'abundances_for_iss.txt'), sep='\t', index=False, header=False)
+
+    # downloading missing MAGs
+    download_mags(mags_df['links'], mags_dir)
+    return species_abundance_table, mags_df
+
+
 if __name__ == '__main__':
     pheno = parse_args().phenotype
     metagenome_file = parse_args().metagenome_file
@@ -222,9 +283,10 @@ if __name__ == '__main__':
     abundance_selection_model = parse_args().a_model
     email = parse_args().email
     api_key = parse_args().api_key
+    add_mags = parse_args().add_mags
 
     Entrez.email = email
-    if api_key is not None:
+    if api_key:
         Entrez.api_key = api_key
 
     for sample in range(1, n_samples + 1):
@@ -232,11 +294,7 @@ if __name__ == '__main__':
         os.makedirs(path, exist_ok=True)
 
     baseline_abundances = pd.read_csv(os.path.join('baseline_phenotypes', pheno + '.csv'), header=None, sep=',')
-    missing_genomes = pd.read_csv(os.path.join('baseline_phenotypes', 'missing_genomes', 'missing_genomes.csv'),
-                                  header=1, sep=',', names=['tax_id', 'species'])
-
     baseline_abundances.columns = ['tax_id', 'species', 'mean_abundance', 'sd_abundance']
-    baseline_abundances = drop_missing_genomes(baseline_abundances, missing_genomes)
     baseline_abundances['mean_abundance'] = baseline_abundances['mean_abundance'] / baseline_abundances[
         'mean_abundance'].sum()
     baseline_abundances['mean_abundance'].fillna(baseline_abundances['mean_abundance'].mean(), inplace=True)
@@ -246,57 +304,58 @@ if __name__ == '__main__':
                               index_col='Pathways')
 
     metagenome_size = min(n_core, len(baseline_abundances)) if n_core else len(baseline_abundances)
-    core_metagenome = generate_core_metagenome(baseline_abundances, metagenome_size, core_selection_model,
-                                               abundance_selection_model)
-    with open('iss_params.yml', 'r') as f:
-        yaml_iss_params = yaml.safe_load(f)
-
+    abundances = generate_core_metagenome(baseline_abundances, metagenome_size, core_selection_model,
+                                          abundance_selection_model)
+    
     for sample in range(1, n_samples + 1):
-        dir = os.path.join(RESULTS_DIR, f'sample_{sample}')
-
-        # Metagenome update
-        species_to_refill = []
-
-        # Core metagenome update from metabolites
-        if metabolites is not None:
-            for metabolite in metabolites:
-                metabol_cmd = f'python clusters.py -M {metabolite} -P {pheno}'
-                result = subprocess.run(metabol_cmd.split())
-        if os.path.isfile('bacteria_metab.txt'):
-            with open('bacteria_metab.txt', 'r') as file:
-                for taxid_specie in file:
-                    species_to_refill.append(tuple(taxid_specie.split(",")))
-
-        # Core metagenome update from pathways
-        if pathways is not None:
-            print('Reading required pathways...')
-            pathways_specified = read_pathways(pathways)
-            species_to_refill = find_minimal_refill(core_metagenome, pathways_specified,
-                                                    pathways_db, baseline_abundances)
-
-        if species_to_refill:
-            core_metagenome = append_species_refill(core_metagenome, species_to_refill)
-
-        prepared_metagenome = update_genomes(core_metagenome, GENOMES_DIR,
-                                             os.path.join(RESULTS_DIR, f'sample_{sample}'),
-                                             n_threads)
-        wr_code = write_multifasta(prepared_metagenome, GENOMES_DIR)
-
-        iss_params = {'-g': os.path.join(GENOMES_DIR, 'multifasta.fna'),
-                      '--abundance_file': os.path.join(RESULTS_DIR, f'sample_{sample}', 'abundances_for_iss.txt'),
-                      '-m': 'miseq', '-o': os.path.join(RESULTS_DIR, f'sample_{sample}', 'miseq_reads'),
-                      '--cpus': n_threads}
-        iss_params = iss_params | yaml_iss_params
-        if n_reads is not None:
-            iss_params['--n_reads'] = int(n_reads)
-        iss_cmd = ['iss', 'generate'] + [str(item) for pair in iss_params.items() for item in pair]
-        result = subprocess.run(iss_cmd)
-
-        if os.path.exists(os.path.join(GENOMES_DIR, 'multifasta.fna')):
-            os.remove(os.path.join(GENOMES_DIR, 'multifasta.fna'))
-        if result.returncode == 0:
-            print(f'\nThe sample_{sample} was successfully generated.')
-        else:
-            print(f'\nThe sample_{sample} generation completed with errors.')
+            print("Praparing sample 1...")
+            to_refill = []
+            dir = os.path.join(RESULTS_DIR, f'sample_{sample}')
+    
+            if metabolites:
+                for metabolite in metabolites:
+                    metabol_cmd = f'python clusters.py -M {metabolite} -P {pheno}'
+                    result = subprocess.run(metabol_cmd.split())
+    
+            if pathways:
+                print('Reading required pathways...')
+                pathways_specified = read_pathways(pathways)
+                to_refill = find_minimal_refill(abundances, pathways_specified, pathways_db, baseline_abundances)
+    
+            if os.path.isfile('bacteria_metab.txt'):
+                with open('bacteria_metab.txt', 'r') as file:
+                    for tx_sp in file:
+                        to_refill.append(tuple(tx_sp.split(",")))
+            if to_refill:
+                abundances = append_species_refill(abundances, to_refill)
+    
+            prepared_abundances = update_genomes(GENOMES_DIR, abundances, dir, n_threads)
+    
+            if add_mags:
+                prepared_abundances, mags_abundances = add_mags_to_sample(prepared_abundances, dir, metadata_path=MAGS_META)
+                wr_code = write_multifasta(prepared_abundances.taxid, GENOMES_DIR, dir, mag_abundances_ids=mags_abundances.MAG_id, mags_dir=MAGS_DIR)
+            else:
+                wr_code = write_multifasta(prepared_abundances.taxid, GENOMES_DIR, dir)
+    
+            iss_params = {'-g': os.path.join(dir, 'multifasta.fna'),
+                          '--abundan    ce_file': os.path.join(dir, 'abundances_for_iss.txt'),
+                          '-m': 'miseq',
+                          '-o': os.path.join(dir, 'miseq_reads'), '--cpus': n_threads}
+            with open('iss_params.yml', 'r') as f:
+                yaml_iss_params = yaml.safe_load(f)
+                iss_params = iss_params | yaml_iss_params
+    
+            if n_reads:
+                iss_params['--n_reads'] = int(n_reads)
+    
+            iss_cmd = ['iss', 'generate'] + [str(item) for pair in iss_params.items() for item in pair]
+            result = subprocess.run(iss_cmd)
+        
+            if os.path.exists(os.path.join(dir, 'multifasta.fna')):
+                os.remove(os.path.join(dir, 'multifasta.fna'))
+            if result.returncode == 0:
+                print(f'\nThe sample_{sample} was successfully generated.')
+            else:
+                print(f'\nThe sample_{sample} generation completed with errors.')
 
     print('\n Metagenomes generation finished!')
