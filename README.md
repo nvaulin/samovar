@@ -1,4 +1,4 @@
-# SAMOVAR: <a href=""><img src="img/Logo_SAMOVAR_pprpl.png" align="right" width="150" ></a>  <h3> Simulator of Artificial Metanomes: Organisms and Viruses from Abundances to Reads </h3> 
+# SAMOVAR: <a href=""><img src="img/Logo_SAMOVAR_pprpl.png" align="right" width="150" ></a>  <h3> Simulator of Artificial Metagenomes: Organisms and Viruses from Abundances to Reads </h3> 
 
 *Metagenomics* – key approach for biological community analysis. Many new tools appear regularly and their validation becomes the crucial challenge. 
 
