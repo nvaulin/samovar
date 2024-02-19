@@ -3,7 +3,7 @@
 *Metagenomics* – key approach for biological community analysis. Many new tools appear regularly and their validation becomes the crucial challenge. 
 
 
-Here we come up with an artificial data generation tool `SAMOVAR` that aims aims to improve algorithms development and accelerate scientific discoveries.
+Here we come up with an artificial data generation tool `SAMOVAR` that aims to improve algorithms development and accelerate scientific discoveries.
 This  pipeline takes the input phenotype or environment as a community property and technical parameters for NGS library to generate `fastq` files with Illumina reads. SAMOVAR performes additional bacteria selection  based on a given *metabolite* or *metabolic pathways*. Overall, our pipeline consists of four steps: 
 - Core-bacterial set selection by given phenotype;
 - Selection of additional bacteria species based on metabolites and metabolic pathways;
@@ -114,15 +114,14 @@ rm -rf samovar
 ### Citation
 
 If you use these tool, please cite as:
-- Vaulin N., Chechenina A., Ivanov. A, Ulyantsev V. SAMOVAR: a pipeline for *in silico* generation of metagenomic communities with given properties. Природа, 2023, 443, 27–28
+- Chechenina A., Vaulin N., Ivanov. A, Ulyantsev V. Development of *in-silico* models of metagenomic communities with given properties and a pipeline for their generation. Bioinformatics institute 2022/23, 2023, 22-24
 
 ```bibtex
 @article{samovar2023,
-  title={SAMOVAR: a pipeline for in silico generation of metagenomic communities with given properties},
-  author={Vaulin, N. and Chechenina, A. and Ivanov, A. and Ulyantsev, V.},
-  journal={Природа},
+  title={Development of in-silico models of metagenomic communities with given properties and a pipeline for their generation},
+  author={Chechenina, A. and Vaulin, N. and Ivanov, A. and Ulyantsev, V.},
+  journal={Bioinformatics institute 2022/23},
   year={2023},
-  volume={443},
-  pages={27--28}
+  pages={22--24}
 }
 ```
